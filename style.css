@@ -1,0 +1,98 @@
+/* 
+Author: Stephen Garo
+Date: 2024-09-30
+Course Module: Web Application Development (CPRG-210-A)
+Assignment: Individual Project 1 - Travel Website
+ */
+
+/* Main page pictures with hover text */
+
+.image-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.country {
+    position: relative;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.country img {
+    width: 300px; 
+    height: 250px; 
+    transition: transform 0.3s ease;
+    border-radius: 20px;
+}
+
+/* enlarges picture on hover */
+.country:hover img {
+    transform: scale(1.05); 
+}
+
+.caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+
+/* shows caption on hover */
+.country:hover .caption {
+    opacity: 1; 
+}
+
+
+/* Background colour on every page */
+body{ 
+    background-color: #eaf0f8;
+    font-family:fantasy;
+    font-weight: lighter;
+}
+
+/* font adjustment on list profile at contact page */
+.list-group-item{
+    font-size: small;}
+
+
+/* Using the Chrome developer tool, I was able to find the CSS needed to overwrite the Bootstrap and modify it */
+/* Banner navigation links on contact and registration page */
+    .nav {
+        --bs-nav-link-padding-x: 1rem;
+        --bs-nav-link-padding-y: 0.5rem;
+        --bs-nav-link-font-weight: ;
+        --bs-nav-link-color: #000;
+        --bs-nav-link-hover-color: var(--bs-link-hover-color);
+        --bs-nav-link-disabled-color: var(--bs-secondary-color);
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+
+    .nav-pills {
+        --bs-nav-pills-border-radius: var(--bs-border-radius);
+        --bs-nav-pills-link-active-color: #000;
+        --bs-nav-pills-link-active-bg: #fff3cd;
+    }
+
+/* CSS for pop up P tags description on every field form at the registration */
+
+.error {
+    color: red;
+    display: none;
+    font-style: italic;
+}
+
+
+
+    
+    
