@@ -1,23 +1,32 @@
 
-// Author: Stephen Garo
-// Date: 2024-09-30
-// Course Module: Web Application Development (CPRG-210-A)
-// Assignment: Individual Project 1 - Travel Website
-
-// All the script below is for index.html and countdown.html
-
-// this function is in conjuction with clickable div elements in index.html, specifically onclick = openCountdown
-function openCountdown(url) {
-    window.targetUrl = url; // Stores the URL in the opener window
-    window.open('countdown.html', '_blank'); // Opens countdown.html with new window
+//automatically prompt current date
+function getCurrentDate() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 }
 
 
-//All the scripts below is for register.html
+document.getElementById('currentDate').value = getCurrentDate();
 
-// prevents form submission for validation
+//generates random Booking ID
+function generateRandomString() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 8; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+    }
+    document.getElementById('randomString').value = result;
+}
 
-document.getElementById("registrationForm").addEventListener("submit", function(event) {
+window.onload = generateRandomString;
+
+//validation
+
+document.getElementById("orderForm").addEventListener("submit", function(event) {
     event.preventDefault(); 
 
     // clears previous error messages
@@ -25,6 +34,8 @@ document.getElementById("registrationForm").addEventListener("submit", function(
 
      // gets values from fields and the trim ignores any white spaces
     const formData = {
+        travelType: document.getElementById("travelType").value.trim(),
+        traveler: document.getElementById("traveler").value.trim(),
         firstName: document.getElementById("firstName").value.trim(),
         lastName: document.getElementById("lastName").value.trim(),
         email: document.getElementById("email").value.trim(),
@@ -60,15 +71,25 @@ function validateForm(data) {
     let isValid = true;
 
     // this if statements argues that if the field is an empty string then it will display text in p tag and will consider isValid as false which will not validate
+    if (!data.travelType) {
+        displayError("travelTypeDesc");
+        isValid = false;
+    }
 
+    const travelerPattern = /^\d{1,3}$/;
+    if (data.traveler === "" || !travelerPattern.test(data.traveler)) {
+        displayError("travelerDesc");
+        isValid = false;
+    }
+    
     const firstNamePattern = /^[a-zA-Z]{2,25}$/;
-    if (data.city === "" || !firstNamePattern.test(data.firstName)) {
+    if (data.firstName === "" || !firstNamePattern.test(data.firstName)) {
         displayError("firstDesc");
         isValid = false;
     }
 
     const lastNamePattern = /^[a-zA-Z]{2,25}$/;
-    if (data.city === "" || !lastNamePattern.test(data.lastName)) {
+    if (data.lastName === "" || !lastNamePattern.test(data.lastName)) {
         displayError("lastDesc");
         isValid = false;
     }
@@ -87,7 +108,7 @@ function validateForm(data) {
     }
 
     const busphonePattern = /^\d{1}-\d{3}-\d{3}-\d{4}$/;
-    if (data.phone === "" || !busphonePattern.test(data.busphone)) {
+    if (data.busphone === "" || !busphonePattern.test(data.busphone)) {
         displayError("busphoneDesc");
         isValid = false;
     }
@@ -111,7 +132,7 @@ function validateForm(data) {
     }
 
     const countryPattern = /^[a-zA-Z]{2,25}$/;
-    if (data.city === "" || !countryPattern.test(data.country)) {
+    if (data.country === "" || !countryPattern.test(data.country)) {
         displayError("countryDesc");
         isValid = false;
     }
@@ -144,7 +165,7 @@ document.getElementById("resetButton").addEventListener("click", function(event)
 // this function hides all the description in the array right away and runs a loop checking to see if its exceptDesc
 function hideAllDescriptionsExcept(exceptDesc) {
     const descriptions = [
-        firstDesc, lastDesc, emailDesc, phoneDesc,
+        travelTypeDesc, travelerDesc, firstDesc, lastDesc, emailDesc, phoneDesc,
         cityDesc, provinceDesc, busphoneDesc, postalDesc, countryDesc, addressDesc
     ];
     descriptions.forEach(desc => {
@@ -155,6 +176,20 @@ function hideAllDescriptionsExcept(exceptDesc) {
 }
 
 // selects input field and description, when input is selected its shows description related to it using onfocus and displays inline but hides all other descriptions
+const travelTypeInput = document.getElementById("travelType");
+const travelTypeDesc = document.getElementById("travelTypeDesc");
+travelTypeInput.onfocus = () => {
+    travelTypeDesc.style.display = 'inline';
+    hideAllDescriptionsExcept(travelTypeDesc);
+};
+
+const travelerInput = document.getElementById("traveler");
+const travelerDesc = document.getElementById("travelerDesc");
+travelerInput.onfocus = () => {
+    travelerDesc.style.display = 'inline';
+    hideAllDescriptionsExcept(travelerDesc);
+};
+
 const firstInput = document.getElementById("firstName");
 const firstDesc = document.getElementById("firstDesc");
 firstInput.onfocus = () => {
@@ -224,5 +259,3 @@ addressInput.onfocus = () => {
     addressDesc.style.display = 'inline';
     hideAllDescriptionsExcept(addressDesc);
 };
-
-
