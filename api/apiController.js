@@ -9,9 +9,18 @@
  **                            IMPORTS
  *------------------------------------------------------------------------**/
 const path = require('path');
-// const User = require('../models/userModel')
-// const sequelize = require('../database/database.js');
-// const validator = require('validator')
+const Customer = require('../models/customerModel')
+const sequelize = require('../database/database');
+const validator = require('validator')
+
+sequelize.sync()
+    .then(() => {
+        console.log('Database Synced!')
+    })
+    .catch(error => {
+        console.error('Error Syncing Databse:', error)
+    });
+
 
 
 /**------------------------------------------------------------------------
