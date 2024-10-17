@@ -9,17 +9,18 @@
  **                            IMPORTS
  *------------------------------------------------------------------------**/
 const path = require('path');
-const Customer = require('../models/customerModel')
-const sequelize = require('../database/database');
 const validator = require('validator')
+const db = require('../database/database')
 
-sequelize.sync()
-    .then(() => {
-        console.log('Database Synced!')
-    })
-    .catch(error => {
-        console.error('Error Syncing Databse:', error)
-    });
+
+/**------------------------------------------------------------------------
+ **                            DATABASE CONNECTION
+ *------------------------------------------------------------------------**/
+
+db.connect((err) => {
+    if (err) throw err;
+    console.log('Connection to db successful');
+});
 
 
 
@@ -31,34 +32,34 @@ sequelize.sync()
 exports.getHomePage = (req, res) => {
     // Send the index.html file located in the public folder
     console.log("getHomePage method is being called. ")
-    res.sendFile(path.join(__dirname, '../public/html/index.html'));
+    res.render('../views/pages/index.ejs')
 
 };
 
 //*Contact Page
 exports.getContactPage = (req, res) => {
     console.log('getContactPage is being called. ')
-    res.sendFile(path.join(__dirname, '../public/html/contact.html'))
+    res.render('../views/pages/contact.ejs')
 
 }
 
 //*Register Page
 exports.getRegisterPage = (req, res) => {
     console.log('getRegisterPage is being called . ')
-    res.sendFile(path.join(__dirname, '../public/html/register.html'))
+    res.render('../views/pages/register.ejs')
 
 }
 
 //* Vacations Page
 exports.getVacationPage = (req, res) => {
     console.log("getVacationPage method is being called. ")
-    res.sendFile(path.join(__dirname, '../public/html/vacation.html'))
+    res.render('../views/pages/vacation.ejs')
 }
 
 //* Order Form Page
 exports.getOrderForm = (req, res) => {
     console.log("getOrderForm method is being called. ")
-    res.sendFile(path.join(__dirname, '../public/html/orderform.html'))
+    res.render('../views/pages/orderform.ejs')
 }
 
 

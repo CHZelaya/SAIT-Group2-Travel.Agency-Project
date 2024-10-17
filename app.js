@@ -25,6 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //*  Ability to pass data between pages.
 // * Setting up serve static assets
 app.use('/static', express.static(path.join(__dirname, 'public'))) // * Store static assets (images, css files, random JS files) in a foler named "Public"
+app.set('view engine', 'ejs');
 
 
 
