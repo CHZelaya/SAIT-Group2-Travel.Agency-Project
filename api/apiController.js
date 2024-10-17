@@ -51,10 +51,40 @@ exports.getRegisterPage = (req, res) => {
 }
 
 //* Vacations Page
-exports.getVacationPage = (req, res) => {
-    console.log("getVacationPage method is being called. ")
-    res.render('../views/pages/vacation.ejs')
+
+
+exports.getVacationPage = async (req, res) => {
+    const sql = 'select * from packages'
+    db.query(sql, (err, result, field) => {
+        if (err) throw err;
+
+        const packagesWithCleanData = result.map(package => {
+            //Declaring variables targeting specific bits of information from the sql query
+            const startDate = package.PkgStartDate;
+            const endDate = package.PkgEndDate;
+            const price = package.PkgBasePrice;
+
+            // Get the date part in YYYY-MM-DD format
+            const cleanedStartDate = startDate.toISOString().substring(0, 10);
+            const cleanedEndDate = endDate.toISOString().substring(0, 10);
+            // Removes trailing zeros after the decimal point
+            const cleanedPrice = price.replace(/\.?0+$/, '');
+
+            //Return a new object with original package data and cleaned values
+            return {
+                ...package,
+                cleanedStartDate,
+                cleanedEndDate,
+                cleanedPrice
+            };
+        })
+
+        console.log("getVacationPage method is being called. ");
+        res.render('../views/pages/vacation.ejs', { packages: packagesWithCleanData });
+    })
 }
+
+
 
 //* Order Form Page
 exports.getOrderForm = (req, res) => {
