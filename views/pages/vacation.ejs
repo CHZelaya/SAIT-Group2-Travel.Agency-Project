@@ -44,8 +44,8 @@
 
             <% packages.forEach(package=> { %>
                 <div class="col-md-3">
-                    <div class="card">
-                        <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Beach Getaway">
+                    <div class="card h-100">
+                        <img src="/packages/<%= package.PkgName.replace(/\s+/g, '').toLowerCase() %>.jpg" class="card-img-top" alt="<%= package.PkgName %>">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <%= package.PkgName %>
@@ -59,21 +59,26 @@
                                                 <%= package.PkgDesc %>
                                             </span>
                             </p>
-                            <a href="/orderform" class="btn btn-primary">Book Now</a>
+                            <a href="/orderform" class="btn btn-warning btn-lg">Book Now</a>
                         </div>
                     </div>
                 </div>
                 <% }) %>
 
-                    <br>
+
+
+            </div>
+        </div>         
+        
+        <br>
 
                     <footer class="footer mt-auto py-3 bg-body-tertiary">
                         <div class="container">
-                            <img src="/mainpagepics/logo.png" alt="Logo" class="logo">
-                            <span class="text-body-secondary">Travel Experts Copyright</span>
+                          <img src="/static/mainpagepics/logo.png" alt="Logo" class="logo">
+                          <span class="text-body-secondary">Travel Experts Copyright</span>
                         </div>
-                    </footer>
-
+                      </footer>
+                    </div>                  
 </body>
 
 </html>

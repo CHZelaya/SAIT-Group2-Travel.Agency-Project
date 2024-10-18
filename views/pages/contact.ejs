@@ -38,7 +38,7 @@ Assignment: Individual Project 1 - Travel Website
       <% agents.forEach(agent => { %>
         <div class="col">
           <div class="d-flex flex-column align-items-center">
-            <img src="" class="img-fluid mb-3" alt="<%= agent.firstName %> <%= agent.lastName %>">
+            <img src="/agents/<%= agent.firstName.toLowerCase() %>_<%= agent.lastName.toLowerCase() %>.jpg" class="img-fluid mb-3" alt="<%= agent.firstName %> <%= agent.lastName %>">
             <h4 class="fw-semibold mb-3"><%= agent.firstName %> <%= agent.lastName %></h4>
             <ul class="list-group w-100">
               <li class="list-group-item">Phone Number: <%= agent.busPhone %></li>
