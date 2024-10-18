@@ -54,10 +54,25 @@ document.getElementById("orderForm").addEventListener("submit", function(event) 
     if (isValid) {
         if (confirm("Do you want to submit the form?")) {
             alert("Form submitted successfully!");
-            // Reset 
             document.getElementById("registrationForm").reset();
+        } else {
+            // Store the current URL in session storage
+            sessionStorage.setItem('returnUrl', window.location.href);
+            // Redirect to the registration page
+            window.location.href = ".views/pages/register";
         }
-    }
+    } else {
+        // Handle form validation errors here
+        const errorMessages = [];
+      if (!formData.firstName) {
+          errorMessages.push("First name is required.");
+      }
+      // Add more validation checks for other fields as needed
+
+      // Display error messages to the user
+      const errorMessageElement = document.getElementById("errorMessages");
+      errorMessageElement.innerHTML = errorMessages.join("<br>");
+  }
 });
 
 // function to clear error messages
