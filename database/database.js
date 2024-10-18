@@ -27,6 +27,6 @@ const con = mysql.createConnection({
     database: DB_NAME,
     password: DB_PASS
 });
-
+  
 //exporting the connection for use in any js file
 module.exports = con;
