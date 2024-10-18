@@ -84,6 +84,36 @@ exports.getVacationPage = async (req, res) => {
     })
 }
 
+exports.getContactPage = async (req, res) => {
+    const sql = `
+        SELECT agents.AgtFirstName, agents.AgtLastName, agents.AgtBusPhone, agents.AgtEmail, agents.AgtPosition,
+               agencies.AgncyAddress, agencies.AgncyCity, agencies.AgncyProv, agencies.AgncyPostal, agencies.AgncyCountry, agencies.AgncyPhone
+        FROM agents
+        JOIN agencies ON agents.AgencyId = agencies.AgencyId
+    `;
+    
+    db.query(sql, (err, results) => {
+        if (err) throw err;
+
+        const agentsWithAgencyData = results.map(agent => ({
+            firstName: agent.AgtFirstName,
+            lastName: agent.AgtLastName,
+            busPhone: agent.AgtBusPhone,
+            email: agent.AgtEmail,
+            position: agent.AgtPosition,
+            address: agent.AgncyAddress,
+            city: agent.AgncyCity,
+            province: agent.AgncyProv,
+            postal: agent.AgncyPostal,
+            country: agent.AgncyCountry,
+            agencyPhone: agent.AgncyPhone
+        }));
+
+        console.log("getContactPage method is being called.");
+        res.render('../views/pages/contact.ejs', { agents: agentsWithAgencyData });
+    });
+}
+
 
 
 //* Order Form Page

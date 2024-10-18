@@ -35,116 +35,23 @@ Assignment: Individual Project 1 - Travel Website
     <h2 class="pb-2 border-bottom">Meet the Travel Experts Team!</h2>
 
     <div class="row row-cols-1 row-cols-md-3 g-4 py-5">
-      <!-- Travel Agent Profile -->
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector1.webp" class="img-fluid mb-3" alt="Debbie Fly">
-          <h4 class="fw-semibold mb-3">Debbie Fly</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-555-4444</li>
-            <li class="list-group-item">Email: debbiefly@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: Asia</li>
-          </ul>
+      <% agents.forEach(agent => { %>
+        <div class="col">
+          <div class="d-flex flex-column align-items-center">
+            <img src="" class="img-fluid mb-3" alt="<%= agent.firstName %> <%= agent.lastName %>">
+            <h4 class="fw-semibold mb-3"><%= agent.firstName %> <%= agent.lastName %></h4>
+            <ul class="list-group w-100">
+              <li class="list-group-item">Phone Number: <%= agent.busPhone %></li>
+              <li class="list-group-item">Email: <%= agent.email %></li>
+              <li class="list-group-item">Position: <%= agent.position %></li>
+              <li class="list-group-item">Agency Phone: <%= agent.agencyPhone %></li>
+              <li class="list-group-item">Address: <%= agent.address %>, <%= agent.city %>, <%= agent.province %>, <%= agent.postal %>, <%= agent.country %></li>
+            </ul>
+          </div>
         </div>
-      </div>
-
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector2.webp" class="img-fluid mb-3" alt="Michelle Swim">
-          <h4 class="fw-semibold mb-3">Michelle Swim</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-555-5444</li>
-            <li class="list-group-item">Email: michelleswim@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: Europe</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector2.webp" class="img-fluid mb-3" alt="Michelle Swim">
-          <h4 class="fw-semibold mb-3">Michelle Swim</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-555-5444</li>
-            <li class="list-group-item">Email: michelleswim@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: Europe</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector2.webp" class="img-fluid mb-3" alt="Michelle Swim">
-          <h4 class="fw-semibold mb-3">Michelle Swim</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-555-5444</li>
-            <li class="list-group-item">Email: michelleswim@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: Europe</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector2.webp" class="img-fluid mb-3" alt="Michelle Swim">
-          <h4 class="fw-semibold mb-3">Michelle Swim</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-555-5444</li>
-            <li class="list-group-item">Email: michelleswim@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: Europe</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector2.webp" class="img-fluid mb-3" alt="Michelle Swim">
-          <h4 class="fw-semibold mb-3">Michelle Swim</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-555-5444</li>
-            <li class="list-group-item">Email: michelleswim@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: Europe</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector2.webp" class="img-fluid mb-3" alt="Michelle Swim">
-          <h4 class="fw-semibold mb-3">Michelle Swim</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-555-5444</li>
-            <li class="list-group-item">Email: michelleswim@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: Europe</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector3.webp" class="img-fluid mb-3" alt="Johnny Sightseer">
-          <h4 class="fw-semibold mb-3">Johnny Sightseer</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-755-4444</li>
-            <li class="list-group-item">Email: johnnysightseer@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: South America</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="d-flex flex-column align-items-center">
-          <img src="/static/vectorpics/vector4.webp" class="img-fluid mb-3" alt="Alex Wanderer">
-          <h4 class="fw-semibold mb-3">Alex Wanderer</h4>
-          <ul class="list-group w-100">
-            <li class="list-group-item">Phone Number: 1-800-755-4489</li>
-            <li class="list-group-item">Email: alexwander@cooltravels.ca</li>
-            <li class="list-group-item">Travel Area Expertise: North America</li>
-          </ul>
-        </div>
-      </div>
-
+      <% }); %>
     </div>
+    
   </div>
 
   <footer class="footer mt-auto py-3 bg-body-tertiary">
