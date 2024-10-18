@@ -36,6 +36,12 @@ exports.getHomePage = (req, res) => {
 
 };
 
+//*Countdown Page
+exports.getCountdownPage = (req, res) => {
+    console.log("getCountdownPage method is being called.");
+    res.render('../views/pages/countdown.ejs'); 
+};
+
 //*Contact Page
 exports.getContactPage = (req, res) => {
     console.log('getContactPage is being called. ')
@@ -43,12 +49,32 @@ exports.getContactPage = (req, res) => {
 
 }
 
-//*Register Page
 exports.getRegisterPage = (req, res) => {
     console.log('getRegisterPage is being called . ')
     res.render('../views/pages/register.ejs')
 
 }
+
+//*Register Page
+exports.registerCustomer = (req, res) => {
+    const { firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body;
+
+    const sql = `
+        INSERT INTO customers (CustFirstName, CustLastName, CustEmail, CustHomePhone, CustBusPhone, 
+        CustCity, CustProv, CustPostal, CustCountry, CustAddress)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(sql, [firstName, lastName, email, phone, busphone, city, province, postal, country, address], (err, result) => {
+        if (err) {
+            console.error("Error inserting customer: ", err);
+            return res.status(500).send("An error occurred while registering the customer.");
+        }
+
+        console.log("Customer registered successfully with ID:", result.insertId);
+        res.redirect('/'); // Redirect to a success page or the home page
+    });
+};
 
 //* Vacations Page
 
