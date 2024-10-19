@@ -142,10 +142,20 @@ exports.getContactPage = async (req, res) => {
 
 
 
+//* Review Form Page
+exports.getReviewForm = (req, res) => {
+    console.log("getOrderForm method is being called. ")
+    res.render('../views/pages/reviewform.ejs')
+}
+
+
+
 //* Order Form Page
 exports.getOrderForm = (req, res) => {
     console.log("getOrderForm method is being called. ")
     res.render('../views/pages/orderform.ejs')
 }
+
+
 
 

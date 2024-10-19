@@ -40,6 +40,10 @@ app.get('/contact', apiController.getContactPage);
 app.get('/register', apiController.getRegisterPage);
 app.get('/vacation', apiController.getVacationPage);
 app.get('/orderform', apiController.getOrderForm);
+app.get('/reviewform', apiController.getReviewForm);
+
+
+
 
 app.post('/register', apiController.registerCustomer);
 
