@@ -37,6 +37,81 @@ app.get('/contact', apiController.getContactPage);
 app.get('/register', apiController.getRegisterPage);
 app.get('/vacation', apiController.getVacationPage);
 app.get('/orderform', apiController.getOrderForm);
+// app.get('/login', apiController.getLoginForm);
+
+
+
+/**------------------------------------------------------------------------
+ **                            ORDER MANAGEMENT
+ *------------------------------------------------------------------------**/
+
+
+const mysql = require('mysql2');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
+const connection = require('./database/database');
+
+const crypto = require('crypto');
+const secretKey = crypto.randomBytes(64).toString('hex');
+console.log(secretKey);
+
+const sessionStore = new MySQLStore(process.env);
+
+
+ app.use(session({
+     secret: secretKey,
+     resave: false,
+     saveUninitialized: true
+ }));
+
+
+ app.get('/orderform', (req, res) => {
+    if (req.session.userPhone) {
+        res.render('orderform');
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.post('/login', (req, res) => {
+    const userPhone = req.body.phone;
+    const checkUserQuery = 'SELECT * FROM users WHERE CustHomePhone = ?';
+
+    connection.query(checkUserQuery, [userPhone], (error, results) => {
+        if (error) throw error;
+
+        if (results.length > 0) {
+            req.session.userPhone = userPhone;
+            res.redirect('/orderform');
+        } else {
+            res.redirect('/register');
+        }
+    });
+});
+
+app.get('/register', (req, res) => {
+    res.render('register');
+});
+
+app.post('/register', (req, res) => {
+    const userFirstName = req.body.firstName;
+    const userLastName = req.body.lastName;
+    const userAddress = req.body.address;
+    const userCity = req.body.city;
+    const userProvince = req.body.province;
+    const userPostalCode = req.body.postal;
+    const userCountry = req.body.country;
+    const userPhone = req.body.phone;
+    const userBusphone = req.body.busphone;
+    const userEmail = req.body.email;
+    const registerUserQuery = 'INSERT INTO customers (CustFirstName, CustLastName, CustAddress, CustCity, CustProv, CustPostal, CustCountry, CustHomePhone, CustBusPhone, CustEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+    connection.query(registerUserQuery, [userPhone, userEmail], (error, results) => {
+        if (error) throw error;
+        req.session.userPhone = userPhone;
+        res.redirect('/orderform');
+    });
+});
 
 
 
