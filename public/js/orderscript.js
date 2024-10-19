@@ -8,21 +8,20 @@
 // //     return `${year}-${month}-${day}`;
 // }
 
-
 // document.getElementById('currentDate').value = getCurrentDate();
 
 //generates random Booking ID
-function generateRandomString() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < 8; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        result += characters[randomIndex];
-    }
-    document.getElementById('randomString').value = result;
-}
+// function generateRandomString() {
+//     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+//     let result = '';
+//     for (let i = 0; i < 8; i++) {
+//         const randomIndex = Math.floor(Math.random() * characters.length);
+//         result += characters[randomIndex];
+//     }
+//     document.getElementById('randomString').value = result;
+// }
 
-window.onload = generateRandomString;
+// window.onload = generateRandomString;
 
 //validation
 
