@@ -39,7 +39,7 @@ exports.getHomePage = (req, res) => {
 //*Countdown Page
 exports.getCountdownPage = (req, res) => {
     console.log("getCountdownPage method is being called.");
-    res.render('../views/pages/countdown.ejs'); 
+    res.render('../views/pages/countdown.ejs');
 };
 
 //*Contact Page
@@ -77,11 +77,6 @@ exports.registerCustomer = (req, res) => {
         console.log("Customer registered successfully with ID:", result.insertId);
         res.redirect('/'); // Redirect to a success page or the home page
 
-            return res.status(500).send("Please click back on your browser and try again");
-        }
-
-        console.log("Customer registered successfully with ID:", result.insertId);
-
         const sqlSelect = 'SELECT * FROM customers WHERE CustomerID = ?';
         db.query(sqlSelect, [result.insertId], (err, registerResult) => {
             if (err) throw err;
@@ -89,7 +84,7 @@ exports.registerCustomer = (req, res) => {
             // Rendering registration information in thank you page
             res.render("../views/pages/tyregister", {
                 titlePage: "Thank You!",
-                register: registerResult[0] 
+                register: registerResult[0]
             });
         });
     });
@@ -137,7 +132,7 @@ exports.getContactPage = async (req, res) => {
         FROM agents
         JOIN agencies ON agents.AgencyId = agencies.AgencyId
     `;
-    
+
     db.query(sql, (err, results) => {
         if (err) throw err;
 
