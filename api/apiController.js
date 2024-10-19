@@ -42,6 +42,13 @@ exports.getHomePage = (req, res) => {
 
 };
 
+//*Countdown Page
+exports.getCountdownPage = (req, res) => {
+    console.log("getCountdownPage method is being called.");
+    res.render('../views/pages/countdown.ejs');
+
+};
+
 //*Contact Page
 exports.getContactPage = (req, res) => {
     console.log('getContactPage is being called. ')
@@ -49,14 +56,18 @@ exports.getContactPage = (req, res) => {
 
 }
 
-//*Register Page
 exports.getRegisterPage = (req, res) => {
     console.log('getRegisterPage is being called . ')
     res.render('../views/pages/register.ejs')
 
 }
 
+
+
+
+
 //* Vacations Page
+
 
 exports.getVacationPage = async (req, res) => {
     const sql = 'select * from packages'
@@ -89,14 +100,17 @@ exports.getVacationPage = async (req, res) => {
     })
 }
 
+
+//*Contact Page
 exports.getContactPage = async (req, res) => {
     const sql = `
         SELECT agents.AgtFirstName, agents.AgtLastName, agents.AgtBusPhone, agents.AgtEmail, agents.AgtPosition,
-               agencies.AgncyAddress, agencies.AgncyCity, agencies.AgncyProv, agencies.AgncyPostal, agencies.AgncyCountry, agencies.AgncyPhone
+        agencies.AgncyAddress, agencies.AgncyCity, agencies.AgncyProv, agencies.AgncyPostal, agencies.AgncyCountry, agencies.AgncyPhone
         FROM agents
         JOIN agencies ON agents.AgencyId = agencies.AgencyId
     `;
-    
+
+
     db.query(sql, (err, results) => {
         if (err) throw err;
 
@@ -126,6 +140,14 @@ app.use(session({
     saveUninitialized: true
 }));
 
+//* Review Form Page
+exports.getReviewForm = (req, res) => {
+    console.log("getOrderForm method is being called. ")
+    res.render('../views/pages/reviewform.ejs')
+}
+
+
+
 //* Order Form Page
 
 exports.getOrderForm = (req, res) => {
@@ -144,6 +166,7 @@ exports.postCheckPhone = (req, res) => {
 
     db.query(checkUserQuery, [phoneNumber], (error, results) => {
         if (error) throw error;
+
 
         if (results.length > 0) {
             req.session.phoneNumber = phoneNumber;
@@ -167,3 +190,55 @@ exports.postRegisterData = (req, res) => {
         res.redirect('/vacation');
     });
 };
+
+/**------------------------------------------------------------------------
+ **                            POST METHODS
+ *------------------------------------------------------------------------**/
+
+
+//*Register Page
+
+exports.registerCustomer = (req, res) => {
+    const { firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body;
+
+    const sql = `
+        INSERT INTO customers (CustFirstName, CustLastName, CustEmail, CustHomePhone, CustBusPhone, 
+        CustCity, CustProv, CustPostal, CustCountry, CustAddress)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(sql, [firstName, lastName, email, phone, busphone, city, province, postal, country, address], (err, result) => {
+        if (err) {
+            console.error("Error inserting customer: ", err);
+
+            return res.status(500).send("An error occurred while registering the customer.");
+        }
+
+        console.log("Customer registered successfully with ID:", result.insertId);
+        res.redirect('/'); // Redirect to a success page or the home page
+
+        const sqlSelect = 'SELECT * FROM customers WHERE CustomerID = ?';
+        db.query(sqlSelect, [result.insertId], (err, registerResult) => {
+            if (err) throw err;
+
+            // Rendering registration information in thank you page
+            res.render("../views/pages/tyregister", {
+                titlePage: "Thank You!",
+                register: registerResult[0]
+            });
+        });
+    });
+};
+
+
+
+/**------------------------------------------------------------------------
+ **                            USE METHODS
+ *------------------------------------------------------------------------**/
+//*404 Page
+exports.handle404 = (req, res) => {
+    console.log("404 error");
+    res.status(404).render('../views/pages/404.ejs', { titlePage: "404 Page Not Found" });
+};
+
+

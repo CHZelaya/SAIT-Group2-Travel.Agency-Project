@@ -97,3 +97,11 @@ body {
     max-height: 50px; 
     margin-right: 20px; 
 }
+
+.rating {
+    margin-right: 15px;
+}
+
+.thanks-rating {
+    display: none;
+}

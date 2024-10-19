@@ -1,15 +1,14 @@
 
-// Author: Stephen Garo
-// Date: 2024-09-30
-// Course Module: Web Application Development (CPRG-210-A)
-// Assignment: Individual Project 1 - Travel Website
 
-// All the script below is for index.html and countdown.html
 
-// this function is in conjuction with clickable div elements in index.html, specifically onclick = openCountdown
+// this function is in conjuction with clickable div elements in index.ejs, specifically onclick = openCountdown
 function openCountdown(url) {
-    window.targetUrl = url; // Stores the URL in the opener window
-    window.open('countdown.html', '_blank'); // Opens countdown.html with new window
+    const countdownWindow = window.open('/countdown', 'Countdown', 'width=600,height=400');
+    if (countdownWindow) {
+
+        countdownWindow.opener.targetUrl = url; // Set the URL to redirect to when the countdown is done
+
+    }
 }
 
 
@@ -39,13 +38,9 @@ document.getElementById("registrationForm").addEventListener("submit", function(
 
     let isValid = validateForm(formData);
 
-    // If all validated then this will show confirmation message
+    // If all validated, submit the form
     if (isValid) {
-        if (confirm("Do you want to submit the form?")) {
-            alert("Form submitted successfully!");
-            // Reset 
-            document.getElementById("registrationForm").reset();
-        }
+        document.getElementById("registrationForm").submit(); // Submits the form
     }
 });
 
