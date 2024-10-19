@@ -11,7 +11,13 @@
 const path = require('path');
 const validator = require('validator')
 const db = require('../database/database')
+const bodyParser = require('body-parser');
 
+const crypto = require('crypto');
+const secretKey = crypto.randomBytes(64).toString('hex');
+const express = require('express');
+const app = express();
+const session = require('express-session');
 
 /**------------------------------------------------------------------------
  **                            DATABASE CONNECTION
@@ -51,7 +57,6 @@ exports.getRegisterPage = (req, res) => {
 }
 
 //* Vacations Page
-
 
 exports.getVacationPage = async (req, res) => {
     const sql = 'select * from packages'
@@ -113,13 +118,52 @@ exports.getContactPage = async (req, res) => {
         res.render('../views/pages/contact.ejs', { agents: agentsWithAgencyData });
     });
 }
-
-
+//---------
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({
+    secret: 'secretKey',
+    resave: false,
+    saveUninitialized: true
+}));
 
 //* Order Form Page
+
 exports.getOrderForm = (req, res) => {
-    console.log("getOrderForm method is being called. ")
-    res.render('../views/pages/orderform.ejs')
+    console.log("getOrderForm method is being called.")
+    res.render('../views/pages/orderform.ejs');
 }
 
+exports.getVacation1 = (req, res) => {
+    res.render('../views/pages/vacation1.ejs');
+};
 
+
+exports.postCheckPhone = (req, res) => {
+    const phoneNumber = req.body.phoneNumber;
+    const checkUserQuery = 'SELECT * FROM customers WHERE CustHomePhone = ?';
+
+    db.query(checkUserQuery, [phoneNumber], (error, results) => {
+        if (error) throw error;
+
+        if (results.length > 0) {
+            req.session.phoneNumber = phoneNumber;
+            res.render('vacation', { pageTitle: "Vacation Packages" });
+        } else {
+            res.redirect('/register');
+        }
+    });
+};
+
+//handle registration data
+
+exports.postRegisterData = (req, res) => {
+    const { firstName, lastName, email, phoneNumber, busphone, city, province, postal, country, address,  otherDetails } = req.body;
+    const registerUserQuery = 'INSERT INTO customers (CustFirstName, CustLastName, CustAddress, CustCity, CustProv, CustPostal, CustCountry, CustHomePhone, CustBusPhone, CustEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+
+    db.query(registerUserQuery, [firstName, lastName, email, phoneNumber, busphone, city, province, postal, country, address,  otherDetails], (error, results) => {
+        if (error) throw error;
+
+        req.session.phoneNumber = phoneNumber;
+        res.redirect('/vacation');
+    });
+};

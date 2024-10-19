@@ -1,27 +1,27 @@
 
 //automatically prompt current date
-// // function getCurrentDate() {
-// //     const date = new Date();
-// //     const year = date.getFullYear();
-// //     const month = String(date.getMonth() + 1).padStart(2, '0'); // 
-// //     const day = String(date.getDate()).padStart(2, '0');
-// //     return `${year}-${month}-${day}`;
-// }
+function getCurrentDate() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // 
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
-// document.getElementById('currentDate').value = getCurrentDate();
+document.getElementById('currentDate').value = getCurrentDate();
 
 //generates random Booking ID
-// function generateRandomString() {
-//     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-//     let result = '';
-//     for (let i = 0; i < 8; i++) {
-//         const randomIndex = Math.floor(Math.random() * characters.length);
-//         result += characters[randomIndex];
-//     }
-//     document.getElementById('randomString').value = result;
-// }
+function generateRandomString() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 8; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        result += characters[randomIndex];
+    }
+    document.getElementById('randomString').value = result;
+}
 
-// window.onload = generateRandomString;
+window.onload = generateRandomString;
 
 //validation
 

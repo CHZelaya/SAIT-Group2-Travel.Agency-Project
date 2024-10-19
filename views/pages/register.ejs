@@ -38,7 +38,7 @@ Assignment: Individual Project 1 - Travel Website
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom">Let's get started!</h2>
 
-        <form id="registrationForm">
+        <form id="registrationForm" method="post" action="/register">
 
             <!-- In the div element, each description are all wrapped in p tags - all have class and each specific id's to run onFocus and validation functions in script.js -->
             <div class="mb-3">
@@ -62,7 +62,7 @@ Assignment: Individual Project 1 - Travel Website
 
             <div class="mb-3">
                 <label for="phone" class="form-label">Home Phone Number</label>
-                <input type="text" class="form-control" placeholder="#-###-###-####" id="phone" name="phone" maxlength="20" required>
+                <input type="text" class="form-control" placeholder="#-###-###-####" id="phone" name="phoneNumber" maxlength="20" required>
                 <p class="error" id="phoneDesc">Ensure your phone number is in this format: #-###-###-####</p>
             </div>
 
@@ -82,7 +82,7 @@ Assignment: Individual Project 1 - Travel Website
 
             <div class="mb-3">
                 <label for="province" class="form-label">Province</label>
-                <input type="text" class="form-control" placeholder="eg. AB" id="province" name="province" maxlength="2" required>
+                <input type="text" class="form-control" placeholder="eg. AB" id="province" name="province" maxlength="4" required>
                 <p class="error" id="provinceDesc">Please enter the province of your home</p>
             </div>
 
