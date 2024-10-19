@@ -35,7 +35,7 @@
 
             <div class="mb-3">
                 <label for="currentDate">Today's Date</label>
-                <input type="text" class="form-control" id="currentDate" value="" readonly>
+                <input type="date" class="form-control" id="currentDate" readonly>
             </div>
 
             <div class="mb-3">
@@ -149,7 +149,14 @@
             <span class="text-body-secondary">Travel Experts Copyright</span>
         </div>
     </footer>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get today's date
+            const today = new Date().toISOString().split('T')[0];
+            // Set the date input value to today's date
+            document.getElementById('currentDate').value = today;
+        });
+    </script>
 
 </body>
 
