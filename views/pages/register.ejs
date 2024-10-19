@@ -38,68 +38,97 @@ Assignment: Individual Project 1 - Travel Website
     <div class="container px-4 py-5">
         <h2 class="pb-2 border-bottom">Let's get started!</h2>
 
+
+
         <form id="registrationForm" method="POST" action="/register">
+
 
             <!-- In the div element, each description are all wrapped in p tags - all have class and each specific id's to run onFocus and validation functions in script.js -->
             <div class="mb-3">
                 <label for="firstName" class="form-label">First Name</label>
+
+                
+
                 <input type="text" class="form-control" placeholder="eg. John" id="firstName" maxlength="25" required name="firstName">
+
                 <p class="error" id="firstDesc">Please enter your first name</p>
             </div>
 
             <div class="mb-3">
                 <label for="lastName" class="form-label">Last Name</label>
+
+
                 <input type="text" class="form-control" placeholder="eg. Smith" id="lastName" maxlength="25" required name="lastName">
+
                 <p class="error" id="lastDesc">Please enter your last name</p>
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
+
                 <input type="email" class="form-control" placeholder="name@example.com" id="email" maxlength="50" required name="email">
+
                 <p class="error" id="emailDesc">Please enter a valid email address</p>
             </div>
 
             <div class="mb-3">
                 <label for="phone" class="form-label">Home Phone Number</label>
+
+
                 <input type="text" class="form-control" placeholder="#-###-###-####" id="phone" maxlength="20" required  name="phone">
+
                 <p class="error" id="phoneDesc">Ensure your phone number is in this format: #-###-###-####</p>
             </div>
 
             <div class="mb-3">
                 <label for="busphone" class="form-label">Business Phone Number</label>
+
+
                 <input type="text" class="form-control" placeholder="#-###-###-####" id="busphone" maxlength="20"
                     required  name="busphone">
+
                 <p class="error" id="busphoneDesc">Ensure your business phone number is in this format: #-###-###-####
                 </p>
             </div>
 
             <div class="mb-3">
                 <label for="city" class="form-label">City</label>
+
                 <input type="text" class="form-control" placeholder="eg. Calgary" id="city" maxlength="50" required name="city">
+
                 <p class="error" id="cityDesc">Please enter the city of your home</p>
             </div>
 
             <div class="mb-3">
                 <label for="province" class="form-label">Province</label>
+
+
                 <input type="text" class="form-control" placeholder="eg. AB" id="province" maxlength="2" required  name="province">
+
                 <p class="error" id="provinceDesc">Please enter the province of your home</p>
             </div>
 
             <div class="mb-3">
                 <label for="postal" class="form-label">Postal Code</label>
+
                 <input type="text" class="form-control" placeholder="xxx-xxx" id="postal" maxlength="7" required  name="postal">
+
                 <p class="error" id="postalDesc">Please enter your postal in this format: X#X-#X#</p>
             </div>
 
             <div class="mb-3">
                 <label for="country" class="form-label">Country</label>
+
                 <input type="text" class="form-control" placeholder="eg. Smith" id="country" maxlength="25" required  name="country">
+
                 <p class="error" id="countryDesc">Please enter your country</p>
             </div>
 
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>
+
                 <textarea class="form-control" rows="3" id="address" maxlength="75" required  name="address"></textarea>
+
                 <p class="error" id="addressDesc">Please enter your address</p>
             </div>
 

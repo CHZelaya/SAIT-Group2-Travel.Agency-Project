@@ -8,7 +8,6 @@ function getCurrentDate() {
     return `${year}-${month}-${day}`;
 }
 
-
 document.getElementById('currentDate').value = getCurrentDate();
 
 //generates random Booking ID
@@ -52,13 +51,17 @@ document.getElementById("orderForm").addEventListener("submit", function(event) 
 
     // If all validated then this will show confirmation message
     if (isValid) {
+
         if (confirm("Do you want to submit the form?")) {
-            alert("Form submitted successfully!");
-            // Reset 
-            document.getElementById("registrationForm").reset();
+        
+                alert("Form submitted successfully!");
+        
+    // Reset 
+                document.getElementById("registrationForm").reset();
+        
         }
+        
     }
-});
 
 // function to clear error messages
 function clearErrorMessages() {
@@ -259,3 +262,4 @@ addressInput.onfocus = () => {
     addressDesc.style.display = 'inline';
     hideAllDescriptionsExcept(addressDesc);
 };
+})

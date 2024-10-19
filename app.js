@@ -34,22 +34,24 @@ app.set('views', path.join(__dirname, 'views'));
 /**------------------------------------------------------------------------
  **                            API CONTROLLERS
  *------------------------------------------------------------------------**/
+//GET
 app.get('/', apiController.getHomePage);
 app.get('/countdown', apiController.getCountdownPage);
 app.get('/contact', apiController.getContactPage);
 app.get('/register', apiController.getRegisterPage);
 app.get('/vacation', apiController.getVacationPage);
 app.get('/orderform', apiController.getOrderForm);
-
 app.get('/reviewform', apiController.getReviewForm);
+app.get('/vacation1', apiController.getVacation1);
 
-
-
-
+//POST
+app.post('/check-phone', apiController.postCheckPhone)
+app.post('/register', apiController.postRegisterData)
 app.post('/register', apiController.registerCustomer);
 
-app.post('/register', apiController.registerCustomer);
+//USE
 app.use(apiController.handle404);
+
 
 
 
