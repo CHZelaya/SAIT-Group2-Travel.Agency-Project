@@ -45,7 +45,8 @@
             <% packages.forEach(package=> { %>
                 <div class="col-md-3">
                     <div class="card h-100">
-                        <img src="/packages/<%= package.PkgName.replace(/\s+/g, '').toLowerCase() %>.jpg" class="card-img-top" alt="<%= package.PkgName %>">
+                        <img src="/packages/<%= package.PkgName.replace(/\s+/g, '').toLowerCase() %>.jpg"
+                            class="card-img-top" alt="<%= package.PkgName %>">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <%= package.PkgName %>
@@ -67,18 +68,18 @@
 
 
 
-            </div>
-        </div>         
-        
-        <br>
+        </div>
+    </div>
 
-                    <footer class="footer mt-auto py-3 bg-body-tertiary">
-                        <div class="container">
-                          <img src="/static/mainpagepics/logo.png" alt="Logo" class="logo">
-                          <span class="text-body-secondary">Travel Experts Copyright</span>
-                        </div>
-                      </footer>
-                    </div>                  
+    <br>
+
+    <footer class="footer mt-auto py-3 bg-body-tertiary">
+        <div class="container">
+            <img src="/static/mainpagepics/logo.png" alt="Logo" class="logo">
+            <span class="text-body-secondary">Travel Experts Copyright</span>
+        </div>
+    </footer>
+    </div>
 </body>
 
 </html>
