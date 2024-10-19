@@ -55,7 +55,9 @@ exports.getRegisterPage = (req, res) => {
 
 }
 
+
 //*Register Page
+
 exports.registerCustomer = (req, res) => {
     const { firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body;
 
@@ -68,11 +70,28 @@ exports.registerCustomer = (req, res) => {
     db.query(sql, [firstName, lastName, email, phone, busphone, city, province, postal, country, address], (err, result) => {
         if (err) {
             console.error("Error inserting customer: ", err);
+
             return res.status(500).send("An error occurred while registering the customer.");
         }
 
         console.log("Customer registered successfully with ID:", result.insertId);
         res.redirect('/'); // Redirect to a success page or the home page
+
+            return res.status(500).send("Please click back on your browser and try again");
+        }
+
+        console.log("Customer registered successfully with ID:", result.insertId);
+
+        const sqlSelect = 'SELECT * FROM customers WHERE CustomerID = ?';
+        db.query(sqlSelect, [result.insertId], (err, registerResult) => {
+            if (err) throw err;
+
+            // Rendering registration information in thank you page
+            res.render("../views/pages/tyregister", {
+                titlePage: "Thank You!",
+                register: registerResult[0] 
+            });
+        });
     });
 };
 
@@ -110,6 +129,7 @@ exports.getVacationPage = async (req, res) => {
     })
 }
 
+//*Contact Page
 exports.getContactPage = async (req, res) => {
     const sql = `
         SELECT agents.AgtFirstName, agents.AgtLastName, agents.AgtBusPhone, agents.AgtEmail, agents.AgtPosition,
@@ -158,4 +178,12 @@ exports.getOrderForm = (req, res) => {
 
 
 
+
+
+
+//*404 Page
+exports.handle404 = (req, res) => {
+    console.log("404 error");
+    res.status(404).render('../views/pages/404.ejs', { titlePage: "404 Page Not Found" });
+};
 

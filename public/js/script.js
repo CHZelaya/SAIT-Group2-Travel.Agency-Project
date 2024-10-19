@@ -1,16 +1,13 @@
 
-// Author: Stephen Garo
-// Date: 2024-09-30
-// Course Module: Web Application Development (CPRG-210-A)
-// Assignment: Individual Project 1 - Travel Website
 
-// All the script below is for index.html and countdown.html
 
-// this function is in conjuction with clickable div elements in index.html, specifically onclick = openCountdown
+// this function is in conjuction with clickable div elements in index.ejs, specifically onclick = openCountdown
 function openCountdown(url) {
     const countdownWindow = window.open('/countdown', 'Countdown', 'width=600,height=400');
     if (countdownWindow) {
+
         countdownWindow.opener.targetUrl = url; // Set the URL to redirect to when the countdown is done
+
     }
 }
 
