@@ -5,7 +5,9 @@
 function openCountdown(url) {
     const countdownWindow = window.open('/countdown', 'Countdown', 'width=600,height=400');
     if (countdownWindow) {
-        countdownWindow.opener.targetUrl = url; 
+
+        countdownWindow.opener.targetUrl = url; // Set the URL to redirect to when the countdown is done
+
     }
 }
 
