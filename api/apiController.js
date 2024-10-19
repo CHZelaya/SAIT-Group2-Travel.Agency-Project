@@ -40,7 +40,7 @@ exports.getHomePage = (req, res) => {
 exports.getCountdownPage = (req, res) => {
     console.log("getCountdownPage method is being called.");
     res.render('../views/pages/countdown.ejs');
-    res.render('../views/pages/countdown.ejs');
+
 };
 
 //*Contact Page
