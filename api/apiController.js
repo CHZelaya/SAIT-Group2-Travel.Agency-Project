@@ -106,6 +106,8 @@ exports.getReviewForm = (req, res) => {
 
 
 
+
+
 //* Order Form Page
 
 exports.getOrderForm = (req, res) => {
@@ -130,6 +132,21 @@ exports.getOrderForm = (req, res) => {
  **                            POST METHODS
  *------------------------------------------------------------------------**/
 
+ //* handling review form submissions
+exports.submitReview = (req, res) => {
+    const { email, currentDate, randomString, rate, comments } = req.body;
+
+    const query = 'INSERT INTO reviews (email, date, booking_code, rating, comments) VALUES (?, ?, ?, ?, ?)';
+
+    db.query(query, [email, currentDate, randomString, rate, comments], (err, result) => {
+        if (err) {
+            console.error('Error inserting data:', err);
+            return res.status(500).send('Internal server error');
+        }
+
+        res.redirect('/thank-you'); // Redirect to a thank you page after successful submission
+    });
+};
 
 exports.checkRegistration = (req, res) => {
     // Grab phone number from form.

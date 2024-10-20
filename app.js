@@ -48,6 +48,9 @@ app.post('/check-registration', apiController.checkRegistration);
 // app.post('/check-phone', apiController.postCheckPhone)
 app.post('/register', apiController.postRegisterData)
 app.post('/register', apiController.registerCustomer);
+app.post('/review', apiController.renderReviewForm);
+
+
 
 //USE
 app.use(apiController.handle404);
