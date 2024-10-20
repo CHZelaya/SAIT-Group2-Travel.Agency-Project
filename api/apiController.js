@@ -235,6 +235,82 @@ exports.registerCustomer = (req, res) => {
 };
 
 
+//Submit Bookings Data
+
+exports.submitBooking = async (req, res) => {
+    const { currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body
+
+    const errors = []; // Array to store errors (if any)
+
+    //Validate first name length
+    if (!validator.isLength(firstName, { min: 1, max: 50 })) {
+        errors.push('First name must be between 1 - 50 characters');
+    }
+    //Validate last name length
+    if (!validator.isLength(lastName, { min: 1, max: 50 })) {
+        errors.push('Last name must be between 1 - 50 characters');
+    }
+    //Validate email is in email format
+    if (!validator.isEmail(email)) {
+        errors.push("Invalid Email format");
+    }
+    //Validate home phone number
+    if (!validator.isMobilePhone(phone, 'any')) {
+        errors.push("Invalid Phone Number");
+
+    //Validate business phone number
+    if (!validator.isMobilePhone(busphone, 'any')) {
+        errors.push("Invalid Phone Number");
+    }
+    //Validate city's length
+    if (!validator.isLength(city, { min: 1, max: 50 })) {
+        errors.push('City must be between 1 and 50 characters');
+    }
+    //Validate province's length
+    if (!validator.isLength(province, { min: 1, max: 50 })) {
+        errors.push("Province must be between 1 and 50 characters");
+    }
+    //validate postalcode in "any" format
+    if (!validator.isPostalCode(postal, 'any')) {
+        errors.push("Invalid postal code.")
+    }
+    //Validate country's length
+    if (!validator.isLength(country, { min: 1, max: 50 })) {
+        errors.push("Province must be between 1 and 50 characters");
+    }
+    //validate address length
+    if (!validator.isLength(address, { min: 1, max: 500 })) {
+        errors.push("Length must be between 1 and 500 characters. ")
+    }
+    if (!validator.isAlphanumeric) {
+        errors.push('Invalid format in Address Field')
+    }
+
+    if (errors.length > 0) {
+        return res.render('../views/pages/orderform.ejs')
+    } else {
+
+
+
+        const results = { currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address }
+
+
+        try {
+            const newBooking = await Booking.create({
+                currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address
+            });
+            res.render('../views/pages/thankyou.ejs', { results: results })
+
+
+        } catch (error) {
+            console.error("I broke!", error)
+        }
+
+        console.log('thankyou is being called successfully')
+    }
+}
+
+
 /**------------------------------------------------------------------------
  **                            USE METHODS
  *------------------------------------------------------------------------**/
@@ -244,4 +320,4 @@ exports.handle404 = (req, res) => {
     res.status(404).render('../views/pages/404.ejs', { titlePage: "404 Page Not Found" });
 };
 
-
+}
