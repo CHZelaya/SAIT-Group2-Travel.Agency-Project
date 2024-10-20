@@ -309,6 +309,7 @@ exports.submitBooking = async (req, res) => {
         console.log('thankyou is being called successfully')
     }
 }
+}
 
 
 /**------------------------------------------------------------------------
@@ -320,4 +321,3 @@ exports.handle404 = (req, res) => {
     res.status(404).render('../views/pages/404.ejs', { titlePage: "404 Page Not Found" });
 };
 
-}
