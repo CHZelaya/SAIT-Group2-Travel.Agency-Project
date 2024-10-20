@@ -67,10 +67,14 @@
                 <label for="vacation" class="form-label">Vacation Packages</label>
                 <select class="form-select" id="vacation">
                     <option value="">Select a vacation package</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                    <option value="4">Four</option>
+                    <option value="Caribbean New Year" <%=packageName==='Caribbean New Year' ? 'selected' : '' %>
+                        >Caribbean New Year</option>
+                    <option value="Polynesian Paradise" <%=packageName==='Polynesian Paradise' ? 'selected' : '' %>
+                        >Polynesian Paradise</option>
+                    <option value="Asian Expedition" <%=packageName==='Asian Expedition' ? 'selected' : '' %>>Asian
+                        Expedition</option>
+                    <option value="European Vacation" <%=packageName==='European Vacation' ? 'selected' : '' %>>European
+                        Vacation</option>
                 </select>
                 <p class="error" id="vacationDesc">Please select a vacation package</p>
             </div>
@@ -78,32 +82,35 @@
             <!-- In the div element, each description are all wrapped in p tags - all have class and each specific id's to run onFocus and validation functions in script.js -->
             <div class="mb-3">
                 <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" placeholder="eg. John" id="firstName" maxlength="25" required>
+                <input type="text" class="form-control" value="<%= result.CustFirstName %>" id="firstName"
+                    maxlength="25" required>
                 <p class="error" id="firstDesc">Please enter your first name</p>
             </div>
 
             <div class="mb-3">
                 <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" placeholder="eg. Smith" id="lastName" maxlength="25" required>
+                <input type="text" class="form-control" value="<%= result.CustLastName %>" id="lastName" maxlength="25"
+                    required>
                 <p class="error" id="lastDesc">Please enter your last name</p>
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" placeholder="name@example.com" id="email" maxlength="50"
+                <input type="email" class="form-control" value="<%= result.CustEmail %>" id="email" maxlength="50"
                     required>
                 <p class="error" id="emailDesc">Please enter a valid email address</p>
             </div>
 
             <div class="mb-3">
                 <label for="phone" class="form-label">Home Phone Number</label>
-                <input type="text" class="form-control" placeholder="#-###-###-####" id="phone" maxlength="20" required>
+                <input type="text" class="form-control" value='<%= result.CustHomePhone %>' id="phone" maxlength="20"
+                    required>
                 <p class="error" id="phoneDesc">Ensure your phone number is in this format: #-###-###-####</p>
             </div>
 
             <div class="mb-3">
                 <label for="busphone" class="form-label">Business Phone Number</label>
-                <input type="text" class="form-control" placeholder="#-###-###-####" id="busphone" maxlength="20"
+                <input type="text" class="form-control" value='<%= result.CustBusPhone %>' id="busphone" maxlength="20"
                     required>
                 <p class="error" id="busphoneDesc">Ensure your business phone number is in this format: #-###-###-####
                 </p>
@@ -111,31 +118,36 @@
 
             <div class="mb-3">
                 <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" placeholder="eg. Calgary" id="city" maxlength="50" required>
+                <input type="text" class="form-control" value="<%= result.CustCity %>" id="city" maxlength="50"
+                    required>
                 <p class="error" id="cityDesc">Please enter the city of your home</p>
             </div>
 
             <div class="mb-3">
                 <label for="province" class="form-label">Province</label>
-                <input type="text" class="form-control" placeholder="eg. AB" id="province" maxlength="2" required>
+                <input type="text" class="form-control" value='<%= result.CustProv %>' id="province" maxlength="2"
+                    required>
                 <p class="error" id="provinceDesc">Please enter the province of your home</p>
             </div>
 
             <div class="mb-3">
                 <label for="postal" class="form-label">Postal Code</label>
-                <input type="text" class="form-control" placeholder="xxx-xxx" id="postal" maxlength="7" required>
+                <input type="text" class="form-control" value="<%= result.CustPostal %>" id="postal" maxlength="7"
+                    required>
                 <p class="error" id="postalDesc">Please enter your postal in this format: X#X-#X#</p>
             </div>
 
             <div class="mb-3">
                 <label for="country" class="form-label">Country</label>
-                <input type="text" class="form-control" placeholder="eg. Canada" id="country" maxlength="25" required>
+                <input type="text" class="form-control" value="<%= result.CustCountry %>" id="country" maxlength="25"
+                    required>
                 <p class="error" id="countryDesc">Please enter your country</p>
             </div>
 
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>
-                <textarea class="form-control" rows="3" id="address" maxlength="75" required></textarea>
+                <textarea class="form-control" rows="3" id="address" maxlength="75"
+                    required><%= result.CustAddress %></textarea>
                 <p class="error" id="addressDesc">Please enter your address</p>
             </div>
 
@@ -151,25 +163,25 @@
         </div>
     </footer>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        // Get today's date
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('currentDate').value = today;
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get today's date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('currentDate').value = today;
 
-        // Generate random string for Booking ID
-        const generateRandomString = (length) => {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return result;
+            // Generate random string for Booking ID
+            const generateRandomString = (length) => {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                return result;
             };
 
             // Populate the Booking ID field
             document.getElementById('randomString').value = generateRandomString(10);
         });
-    // </script> 
+        // </script>
 </body>
 
 </html>

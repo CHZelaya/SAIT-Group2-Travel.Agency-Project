@@ -11,13 +11,7 @@
 const path = require('path');
 const validator = require('validator')
 const db = require('../database/database')
-const bodyParser = require('body-parser');
 
-const crypto = require('crypto');
-const secretKey = crypto.randomBytes(64).toString('hex');
-const express = require('express');
-const app = express();
-const session = require('express-session');
 
 /**------------------------------------------------------------------------
  **                            DATABASE CONNECTION
@@ -68,7 +62,7 @@ exports.getRegisterPage = (req, res) => {
 exports.getVacationPage = async (req, res) => {
 
     // Render the vacation page with an empty packages array initially, showing only the form to add the phone number
-    res.render('../views/pages/vacation.ejs', { packages: [], showRegistrationLink: false, userChecked: false, customerFName: '' })
+    res.render('../views/pages/vacation.ejs', { packages: [], showRegistrationLink: false, userChecked: false, customerFName: '', userPhoneNumber: '' })
 }
 
 
@@ -115,13 +109,21 @@ exports.getReviewForm = (req, res) => {
 //* Order Form Page
 
 exports.getOrderForm = (req, res) => {
-    console.log("getOrderForm method is being called.")
-    res.render('../views/pages/orderform.ejs');
+    const userPhoneNumber = req.query.phone
+    console.log('USERPHONENUMBER:', userPhoneNumber)
+    const packageName = req.query.package
+    const query = 'SELECT * from customers WHERE CustHomePhone = ?'
+    db.query(query, [userPhoneNumber], (err, result) => {
+        if (err) {
+            console.error(err)
+        }
+        console.log('RESULT:', result)
+        console.log("getOrderForm method is being called.")
+        res.render('../views/pages/orderform.ejs', { result: result[0], packageName });
+    })
+
 }
 
-exports.getVacation1 = (req, res) => {
-    res.render('../views/pages/vacation1.ejs');
-};
 
 
 /**------------------------------------------------------------------------
@@ -131,23 +133,23 @@ exports.getVacation1 = (req, res) => {
 
 exports.checkRegistration = (req, res) => {
     // Grab phone number from form.
-    const userPhone = req.body.phone.replace(/\D/g, ''); // Normalize phone number
+    const userPhoneNumber = req.body.phone.replace(/\D/g, ''); // Normalize phone number
 
     // Run query to check if phone number exists
     const query = 'select * from customers where CustHomePhone = ?'
-    db.query(query, [userPhone], (err, results) => {
+    db.query(query, [userPhoneNumber], (err, results) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Server Error');
         }
 
-        // Check if the user is registered. 
+        // Check if the user is registered.
         if (results.length > 0) {
             console.log(results)
             //Grab Customers first name
             const customerFName = results[0].CustFirstName
             console.log(customerFName)
-            // User is registered, fetch vacation packages. 
+            // User is registered, fetch vacation packages.
             const sql = 'select * from packages'
             db.query(sql, (err, result, field) => {
                 if (err) throw err;
@@ -157,6 +159,8 @@ exports.checkRegistration = (req, res) => {
                     const startDate = package.PkgStartDate;
                     const endDate = package.PkgEndDate;
                     const price = package.PkgBasePrice;
+
+                    //! Because the PkgStartDate/EndDate are objects, we need to use toISOString() to parse it into a usable ISO 8601 standard, of which we can then run string methods on it to manipulate the data.
 
                     // Get the date part in YYYY-MM-DD format
                     const cleanedStartDate = startDate.toISOString().substring(0, 10);
@@ -174,12 +178,12 @@ exports.checkRegistration = (req, res) => {
                 })
 
                 console.log("getVacationPage method is being called. ");
-                res.render('../views/pages/vacation.ejs', { packages: packagesWithCleanData, showRegistrationLink: false, userChecked: true, customerFName: customerFName });
+                res.render('../views/pages/vacation.ejs', { packages: packagesWithCleanData, showRegistrationLink: false, userChecked: true, customerFName: customerFName, userPhoneNumber: userPhoneNumber });
             })
         } else {
             // User is not registered
             console.log('User is not registered. Render Registration Link');
-            res.render('../views/pages/vacation.ejs', { packages: [], showRegistrationLink: true, userChecked: true, customerFName: '' });
+            res.render('../views/pages/vacation.ejs', { packages: [], showRegistrationLink: true, userChecked: true, customerFName: '', userPhoneNumber: '' });
         }
     })
 }
@@ -202,7 +206,7 @@ exports.registerCustomer = (req, res) => {
     const { firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body;
 
     const sql = `
-        INSERT INTO customers (CustFirstName, CustLastName, CustEmail, CustHomePhone, CustBusPhone, 
+        INSERT INTO customers (CustFirstName, CustLastName, CustEmail, CustHomePhone, CustBusPhone,
         CustCity, CustProv, CustPostal, CustCountry, CustAddress)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
@@ -229,30 +233,6 @@ exports.registerCustomer = (req, res) => {
         });
     });
 };
-
-
-
-
-
-exports.checkIfRegistered = async (req, res) => {
-    const userPhoneNumber = req.body.CustHomePhone // get the phone number from the form
-
-    // Query to check if the phone number exists
-    const query = 'SELECT * FROM customers where CustHomePhone = ?'
-    db.query(query, [userPhoneNumber], (error, results) => {
-        if (error) {
-            return console.error('Something went wrong', error);
-        }
-
-        const isRegistered = results.length > 0; // Check if the user is registered
-        if (isRegistered) {
-            res.render('vacation', { isRegistered: true, userPhoneNumber });
-        } else {
-            res.render('vacation', { isRegistered: false, userPhoneNumber: '' });
-        }
-    })
-
-}
 
 
 /**------------------------------------------------------------------------
