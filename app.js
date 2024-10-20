@@ -46,7 +46,7 @@ app.get('/reviewform', apiController.getReviewForm);
 //POST
 app.post('/check-registration', apiController.checkRegistration);
 // app.post('/check-phone', apiController.postCheckPhone)
-app.post('/register', apiController.postRegisterData)
+// app.post('/register', apiController.postRegisterData)
 app.post('/register', apiController.registerCustomer);
 
 //USE
