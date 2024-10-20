@@ -104,13 +104,13 @@ function validateForm(data) {
         isValid = false;
     }
 
-    const phonePattern = /^\d{1}-\d{3}-\d{3}-\d{4}$/;
+    const phonePattern = /^\d{10}$/;
     if (data.phone === "" || !phonePattern.test(data.phone)) {
         displayError("phoneDesc");
         isValid = false;
     }
 
-    const busphonePattern = /^\d{1}-\d{3}-\d{3}-\d{4}$/;
+    const busphonePattern = /^\d{10}$/;
     if (data.busphone === "" || !busphonePattern.test(data.busphone)) {
         displayError("busphoneDesc");
         isValid = false;
