@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You</title>
+</head>
+<body>
+  <div class="responsecontainer">
+      <div class="card" style="width: 30rem;">
+          <div class="card-body">
+              <h5 class="card-title">Thank You for Your Submission!</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Your Details:</h6>
+              <p class="card-text"><strong>Time of Booking:</strong>
+                <%= results.currentDate %>
+              </p>
+              <p class="card-text"><strong>Booking Code:</strong>
+              <%= results.randomString %>
+              </p>
+              <p class="card-text"><strong>Number of Travelers:</strong>
+                <%= results.traveler %>
+              </p>
+              <p class="card-text"><strong>Travel Reason:</strong>
+                <%= results.travelType %>
+              </p>
+              <p class="card-text"><strong>Vacation Package:</strong>
+                <%= results.vacation %>
+              </p>
+              <p class="card-text"><strong>First Name:</strong>
+                  <%= results.firstName %>
+              </p>
+              <p class="card-text"><strong>Last Name:</strong>
+                  <%= results.lastName %>
+              </p>
+              <p class="card-text"><strong>Email:</strong>
+                  <%= results.email %>
+              </p>
+              <p class="card-text"><strong>Phone Number:</strong>
+                  <%= results.phone %>
+              </p>
+              <p class="card-text"><strong>City:</strong>
+                  <%= results.city %>
+              </p>
+              <p class="card-text"><strong>Province:</strong>
+                  <%= results.province %>
+              </p>
+              <p class="card-text"><strong>Postal Code:</strong>
+                  <%= results.postal %>
+              </p>
+              <p class="card-text"><strong>Address:</strong>
+                  <%= results.address %>
+              </p>
+          </div>
+      </div>
+  </div>
+</body>
+</html>
