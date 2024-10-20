@@ -13,7 +13,11 @@
 
 </head>
 
+
+
+
 <body>
+
     <div class="container">
         <header class="d-flex justify-content-center py-3">
             <img src="/mainpagepics/logo.png" alt="Logo" class="logo">
@@ -32,54 +36,103 @@
         <img src="/mainpagepics/travelhero.jpg" alt="Hero Image" class="img-fluid">
         <div class="container">
             <h1 class="mt-4">Discover Your Next Adventure</h1>
-            <p>Book amazing vacation packages with us.</p>
-            <a href="#packages" class="btn btn-light btn-lg">Book a Package</a>
+            <p>Book amazing vacation packages with us.</p><br>
+
         </div>
     </div>
 
-    <!-- Vacation Packages Section -->
-    <div class="container mt-5" id="packages">
-        <h2 class="text-center mb-4">Our Vacation Packages</h2>
-        <div class="row">
-
-            <% packages.forEach(package=> { %>
-                <div class="col-md-3">
-                    <div class="card h-100">
-                        <img src="/packages/<%= package.PkgName.replace(/\s+/g, '').toLowerCase() %>.jpg"
-                            class="card-img-top" alt="<%= package.PkgName %>">
+    <% if (userChecked==false) {%>
+        <div class="container mb-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <%= package.PkgName %>
-                            </h5>
-                            <p class="card-text"><strong>Destination:</strong> Maldives<br>
-                                <strong>Price: </strong>$<%= package.cleanedPrice %><br>
-                                    <strong>Trip Dates:</strong>
-                                    <%= package.cleanedStartDate %> <span style="font-size:x-small;">to</span>
-                                        <%= package.cleanedEndDate %><br>
-                                            <span style="font-size: smaller;">
-                                                <%= package.PkgDesc %>
-                                            </span>
-                            </p>
-                            <a href="/orderform" class="btn btn-warning btn-lg">Book Now</a>
+                            <h1 class="text-center">Check Your Registration</h1>
+                            <div id="registration-form">
+                                <form action="/check-registration" method="POST">
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Enter your phone number:</label>
+                                        <input type="text" id="phone" name="phone" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <% }) %>
-
-
-
+            </div>
         </div>
-    </div>
+        <% }%>
+            <!-- Vacation Packages Section -->
+            <% if (packages && packages.length> 0) { %>
+                <div class="container mt-5" id="packages">
+                    <h1 class="text-center"> Thank you for being a valued Customer,<span style="font-style: italic;">
+                            <%= customerFName %>
+                        </span>
+                    </h1>
+                    <h2 class="text-center mb-4">Our Vacation Packages</h2>
+                    <div class="row">
 
-    <br>
+                        <% packages.forEach(package=> { %>
+                            <div class="col-md-3">
+                                <div class="card h-100">
+                                    <img src="/packages/<%= package.PkgName.replace(/\s+/g, '').toLowerCase() %>.jpg"
+                                        class="card-img-top" alt="<%= package.PkgName %>">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <%= package.PkgName %>
+                                        </h5>
+                                        <p class="card-text"><strong>Destination:</strong> Maldives<br>
+                                            <strong>Price: </strong>$<%= package.cleanedPrice %><br>
+                                                <strong>Trip Dates:</strong>
+                                                <%= package.cleanedStartDate %> <span
+                                                        style="font-size:x-small;">to</span>
+                                                    <%= package.cleanedEndDate %><br>
+                                                        <span style="font-size: smaller;">
+                                                            <%= package.PkgDesc %>
+                                                        </span>
+                                        </p>
+                                        <a href="/orderform" class="btn btn-warning btn-lg">Book Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                                <% } %>
 
-    <footer class="footer mt-auto py-3 bg-body-tertiary">
-        <div class="container">
-            <img src="/static/mainpagepics/logo.png" alt="Logo" class="logo">
-            <span class="text-body-secondary">Travel Experts Copyright</span>
-        </div>
-    </footer>
-    </div>
+                                    <% if (showRegistrationLink) { %>
+                                        <div class="container mb-5">
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div id="registration-link">
+                                                                <div class="mb-3">
+                                                                    <h4 class="text-center">You need to register to book
+                                                                        a vacation package.
+                                                                    </h4>
+                                                                    <h5 class="text-center">
+                                                                        <a href="/register">Go to Registration Form</a>
+                                                                    </h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                    </div>
+                </div>
+
+                <br>
+
+                <footer class="footer mt-auto py-3 bg-body-tertiary">
+                    <div class="container">
+                        <img src="/static/mainpagepics/logo.png" alt="Logo" class="logo">
+                        <span class="text-body-secondary">Travel Experts Copyright</span>
+                    </div>
+                </footer>
+                </div>
 </body>
 
 </html>

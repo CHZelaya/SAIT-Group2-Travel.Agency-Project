@@ -63,41 +63,12 @@ exports.getRegisterPage = (req, res) => {
 }
 
 
-
-
-
 //* Vacations Page
 
-
 exports.getVacationPage = async (req, res) => {
-    const sql = 'select * from packages'
-    db.query(sql, (err, result, field) => {
-        if (err) throw err;
 
-        const packagesWithCleanData = result.map(package => {
-            //Declaring variables targeting specific bits of information from the sql query
-            const startDate = package.PkgStartDate;
-            const endDate = package.PkgEndDate;
-            const price = package.PkgBasePrice;
-
-            // Get the date part in YYYY-MM-DD format
-            const cleanedStartDate = startDate.toISOString().substring(0, 10);
-            const cleanedEndDate = endDate.toISOString().substring(0, 10);
-            // Removes trailing zeros after the decimal point
-            const cleanedPrice = price.replace(/\.?0+$/, '');
-
-            //Return a new object with original package data and cleaned values
-            return {
-                ...package,
-                cleanedStartDate,
-                cleanedEndDate,
-                cleanedPrice
-            };
-        })
-
-        console.log("getVacationPage method is being called. ");
-        res.render('../views/pages/vacation.ejs', { packages: packagesWithCleanData });
-    })
+    // Render the vacation page with an empty packages array initially, showing only the form to add the phone number
+    res.render('../views/pages/vacation.ejs', { packages: [], showRegistrationLink: false, userChecked: false, customerFName: '' })
 }
 
 
@@ -132,13 +103,6 @@ exports.getContactPage = async (req, res) => {
         res.render('../views/pages/contact.ejs', { agents: agentsWithAgencyData });
     });
 }
-//---------
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session({
-    secret: 'secretKey',
-    resave: false,
-    saveUninitialized: true
-}));
 
 //* Review Form Page
 exports.getReviewForm = (req, res) => {
@@ -160,43 +124,79 @@ exports.getVacation1 = (req, res) => {
 };
 
 
-exports.postCheckPhone = (req, res) => {
-    const phoneNumber = req.body.phoneNumber;
-    const checkUserQuery = 'SELECT * FROM customers WHERE CustHomePhone = ?';
-
-    db.query(checkUserQuery, [phoneNumber], (error, results) => {
-        if (error) throw error;
+/**------------------------------------------------------------------------
+ **                            POST METHODS
+ *------------------------------------------------------------------------**/
 
 
-        if (results.length > 0) {
-            req.session.phoneNumber = phoneNumber;
-            res.render('vacation', { pageTitle: "Vacation Packages" });
-        } else {
-            res.redirect('/register');
+exports.checkRegistration = (req, res) => {
+    // Grab phone number from form.
+    const userPhone = req.body.phone.replace(/\D/g, ''); // Normalize phone number
+
+    // Run query to check if phone number exists
+    const query = 'select * from customers where CustHomePhone = ?'
+    db.query(query, [userPhone], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Server Error');
         }
-    });
-};
 
-//handle registration data
+        // Check if the user is registered. 
+        if (results.length > 0) {
+            console.log(results)
+            //Grab Customers first name
+            const customerFName = results[0].CustFirstName
+            console.log(customerFName)
+            // User is registered, fetch vacation packages. 
+            const sql = 'select * from packages'
+            db.query(sql, (err, result, field) => {
+                if (err) throw err;
+
+                const packagesWithCleanData = result.map(package => {
+                    //Declaring variables targeting specific bits of information from the sql query
+                    const startDate = package.PkgStartDate;
+                    const endDate = package.PkgEndDate;
+                    const price = package.PkgBasePrice;
+
+                    // Get the date part in YYYY-MM-DD format
+                    const cleanedStartDate = startDate.toISOString().substring(0, 10);
+                    const cleanedEndDate = endDate.toISOString().substring(0, 10);
+                    // Removes trailing zeros after the decimal point
+                    const cleanedPrice = price.replace(/\.?0+$/, '');
+
+                    //Return a new object with original package data and cleaned values
+                    return {
+                        ...package,
+                        cleanedStartDate,
+                        cleanedEndDate,
+                        cleanedPrice
+                    };
+                })
+
+                console.log("getVacationPage method is being called. ");
+                res.render('../views/pages/vacation.ejs', { packages: packagesWithCleanData, showRegistrationLink: false, userChecked: true, customerFName: customerFName });
+            })
+        } else {
+            // User is not registered
+            console.log('User is not registered. Render Registration Link');
+            res.render('../views/pages/vacation.ejs', { packages: [], showRegistrationLink: true, userChecked: true, customerFName: '' });
+        }
+    })
+}
+
+//*Register Page
 
 exports.postRegisterData = (req, res) => {
-    const { firstName, lastName, email, phoneNumber, busphone, city, province, postal, country, address,  otherDetails } = req.body;
+    const { firstName, lastName, email, phoneNumber, busphone, city, province, postal, country, address, otherDetails } = req.body;
     const registerUserQuery = 'INSERT INTO customers (CustFirstName, CustLastName, CustAddress, CustCity, CustProv, CustPostal, CustCountry, CustHomePhone, CustBusPhone, CustEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-    db.query(registerUserQuery, [firstName, lastName, email, phoneNumber, busphone, city, province, postal, country, address,  otherDetails], (error, results) => {
+    db.query(registerUserQuery, [firstName, lastName, email, phoneNumber, busphone, city, province, postal, country, address, otherDetails], (error, results) => {
         if (error) throw error;
 
         req.session.phoneNumber = phoneNumber;
         res.redirect('/vacation');
     });
 };
-
-/**------------------------------------------------------------------------
- **                            POST METHODS
- *------------------------------------------------------------------------**/
-
-
-//*Register Page
 
 exports.registerCustomer = (req, res) => {
     const { firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body;
@@ -230,6 +230,29 @@ exports.registerCustomer = (req, res) => {
     });
 };
 
+
+
+
+
+exports.checkIfRegistered = async (req, res) => {
+    const userPhoneNumber = req.body.CustHomePhone // get the phone number from the form
+
+    // Query to check if the phone number exists
+    const query = 'SELECT * FROM customers where CustHomePhone = ?'
+    db.query(query, [userPhoneNumber], (error, results) => {
+        if (error) {
+            return console.error('Something went wrong', error);
+        }
+
+        const isRegistered = results.length > 0; // Check if the user is registered
+        if (isRegistered) {
+            res.render('vacation', { isRegistered: true, userPhoneNumber });
+        } else {
+            res.render('vacation', { isRegistered: false, userPhoneNumber: '' });
+        }
+    })
+
+}
 
 
 /**------------------------------------------------------------------------

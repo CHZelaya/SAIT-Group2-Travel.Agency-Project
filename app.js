@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true })); //*  Ability to pass data betwe
 // * Setting up serve static assets
 app.use('/static', express.static(path.join(__dirname, 'public'))) // * Store static assets (images, css files, random JS files) in a foler named "Public"
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); 
+app.set('views', path.join(__dirname, 'views'));
 
 
 
@@ -42,10 +42,10 @@ app.get('/register', apiController.getRegisterPage);
 app.get('/vacation', apiController.getVacationPage);
 app.get('/orderform', apiController.getOrderForm);
 app.get('/reviewform', apiController.getReviewForm);
-app.get('/vacation1', apiController.getVacation1);
 
 //POST
-app.post('/check-phone', apiController.postCheckPhone)
+app.post('/check-registration', apiController.checkRegistration);
+// app.post('/check-phone', apiController.postCheckPhone)
 app.post('/register', apiController.postRegisterData)
 app.post('/register', apiController.registerCustomer);
 
