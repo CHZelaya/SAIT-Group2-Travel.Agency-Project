@@ -10,7 +10,8 @@
  *------------------------------------------------------------------------**/
 const path = require('path');
 const validator = require('validator')
-const db = require('../database/database')
+const db = require('../database/database');
+const { resourceUsage } = require('process');
 
 
 /**------------------------------------------------------------------------
@@ -109,6 +110,7 @@ exports.getReviewForm = (req, res) => {
 //* Order Form Page
 
 exports.getOrderForm = (req, res) => {
+    const errors = [];
     const userPhoneNumber = req.query.phone
     console.log('USERPHONENUMBER:', userPhoneNumber)
     const packageName = req.query.package
@@ -119,7 +121,7 @@ exports.getOrderForm = (req, res) => {
         }
         console.log('RESULT:', result)
         console.log("getOrderForm method is being called.")
-        res.render('../views/pages/orderform.ejs', { result: result[0], packageName });
+        res.render('../views/pages/orderform.ejs', { result: result[0], packageName, errors: errors });
     })
 
 }
@@ -219,7 +221,7 @@ exports.registerCustomer = (req, res) => {
         }
 
         console.log("Customer registered successfully with ID:", result.insertId);
-        res.redirect('/'); // Redirect to a success page or the home page
+        // res.redirect('/'); // Redirect to a success page or the home page
 
         const sqlSelect = 'SELECT * FROM customers WHERE CustomerID = ?';
         db.query(sqlSelect, [result.insertId], (err, registerResult) => {
@@ -258,57 +260,59 @@ exports.submitBooking = async (req, res) => {
     if (!validator.isMobilePhone(phone, 'any')) {
         errors.push("Invalid Phone Number");
 
-    //Validate business phone number
-    if (!validator.isMobilePhone(busphone, 'any')) {
-        errors.push("Invalid Phone Number");
-    }
-    //Validate city's length
-    if (!validator.isLength(city, { min: 1, max: 50 })) {
-        errors.push('City must be between 1 and 50 characters');
-    }
-    //Validate province's length
-    if (!validator.isLength(province, { min: 1, max: 50 })) {
-        errors.push("Province must be between 1 and 50 characters");
-    }
-    //validate postalcode in "any" format
-    if (!validator.isPostalCode(postal, 'any')) {
-        errors.push("Invalid postal code.")
-    }
-    //Validate country's length
-    if (!validator.isLength(country, { min: 1, max: 50 })) {
-        errors.push("Province must be between 1 and 50 characters");
-    }
-    //validate address length
-    if (!validator.isLength(address, { min: 1, max: 500 })) {
-        errors.push("Length must be between 1 and 500 characters. ")
-    }
-    if (!validator.isAlphanumeric) {
-        errors.push('Invalid format in Address Field')
-    }
-
-    if (errors.length > 0) {
-        return res.render('../views/pages/orderform.ejs')
-    } else {
-
-
-
-        const results = { currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address }
-
-
-        try {
-            const newBooking = await Booking.create({
-                currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address
-            });
-            res.render('../views/pages/thankyou.ejs', { results: results })
-
-
-        } catch (error) {
-            console.error("I broke!", error)
+        //Validate business phone number
+        if (!validator.isMobilePhone(busphone, 'any')) {
+            errors.push("Invalid Phone Number");
+        }
+        //Validate city's length
+        if (!validator.isLength(city, { min: 1, max: 50 })) {
+            errors.push('City must be between 1 and 50 characters');
+        }
+        //Validate province's length
+        if (!validator.isLength(province, { min: 1, max: 50 })) {
+            errors.push("Province must be between 1 and 50 characters");
+        }
+        //validate postalcode in "any" format
+        if (!validator.isPostalCode(postal, 'any')) {
+            errors.push("Invalid postal code.")
+        }
+        //Validate country's length
+        if (!validator.isLength(country, { min: 1, max: 50 })) {
+            errors.push("Province must be between 1 and 50 characters");
+        }
+        //validate address length
+        if (!validator.isLength(address, { min: 1, max: 500 })) {
+            errors.push("Length must be between 1 and 500 characters. ")
+        }
+        if (!validator.isAlphanumeric) {
+            errors.push('Invalid format in Address Field')
         }
 
-        console.log('thankyou is being called successfully')
+        if (errors.length > 0) {
+            return res.render('../views/pages/orderform.ejs', { errors: errors })
+        } else {
+
+
+            const results = { currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address }
+
+
+            try {
+                const newBooking = await Booking.create({
+                    currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address
+                });
+                res.render('../views/pages/thankyou.ejs', { results: results })
+
+
+            } catch (error) {
+                console.error("I broke!", error)
+            }
+
+            console.log('thankyou is being called successfully')
+        }
     }
 }
+
+
 
 
 /**------------------------------------------------------------------------
@@ -320,4 +324,3 @@ exports.handle404 = (req, res) => {
     res.status(404).render('../views/pages/404.ejs', { titlePage: "404 Page Not Found" });
 };
 
-}

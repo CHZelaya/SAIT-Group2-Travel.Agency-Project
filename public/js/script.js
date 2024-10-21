@@ -16,13 +16,13 @@ function openCountdown(url) {
 
 // prevents form submission for validation
 
-document.getElementById("registrationForm").addEventListener("submit", function(event) {
-    event.preventDefault(); 
+document.getElementById("registrationForm").addEventListener("submit", function (event) {
+    event.preventDefault();
 
     // clears previous error messages
     clearErrorMessages();
 
-     // gets values from fields and the trim ignores any white spaces
+    // gets values from fields and the trim ignores any white spaces
     const formData = {
         firstName: document.getElementById("firstName").value.trim(),
         lastName: document.getElementById("lastName").value.trim(),
@@ -111,12 +111,12 @@ function validateForm(data) {
         isValid = false;
     }
 
-    if (data.address === ""|| data.address.length > 75) {
+    if (data.address === "" || data.address.length > 75) {
         displayError("addressDesc");
         isValid = false;
     }
-// ends the function and return all values above to see if isValid is true or false
-    return isValid; 
+    // ends the function and return all values above to see if isValid is true or false
+    return isValid;
 }
 
 // this displays error messages
@@ -125,7 +125,7 @@ function displayError(elementId) {
 }
 
 // Reset button confirmation
-document.getElementById("resetButton").addEventListener("click", function(event) {
+document.getElementById("resetButton").addEventListener("click", function (event) {
     if (!confirm("Are you sure you want to reset the form?")) {
         event.preventDefault(); // stops reset if user cancels
     } else {

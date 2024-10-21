@@ -33,126 +33,138 @@
         <h2 class="pb-2 border-bottom">Book your package now !</h2>
 
         <form id="orderForm" action="/booking" method="POST">
+            <% if (errors.length> 0) { %>
+                <li>
+                    <%= errors %>
+                </li>
+                <% } %>
+                    <div class="mb-3">
+                        <label for="currentDate">Today's Date</label>
+                        <input type="date" class="form-control" id="currentDate" name="currentDate" readonly>
+                    </div>
 
-            <div class="mb-3">
-                <label for="currentDate">Today's Date</label>
-                <input type="date" class="form-control" id="currentDate" name="currentDate" readonly>
-            </div>
+                    <div class="mb-3">
+                        <label for="randomString">Booking Code</label>
+                        <input type="text" class="form-control" id="randomString" name="randomString" readonly>
+                    </div>
 
-            <div class="mb-3">
-                <label for="randomString">Booking Code</label>
-                <input type="text" class="form-control" id="randomString" name="randomString" readonly>
-            </div>
+                    <div class="mb-3">
+                        <label for="traveler" class="form-label">How many travelers?</label>
+                        <input type="number" class="form-control" placeholder="0-9" id="traveler" name="traveler"
+                            maxlength="3" required>
+                        <p class="error" id="travelerDesc">Please enter how many travelers</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="traveler" class="form-label">How many travelers?</label>
-                <input type="number" class="form-control" placeholder="0-9" id="traveler" name="traveler" maxlength="3" required>
-                <p class="error" id="travelerDesc">Please enter how many travelers</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="travelType" class="form-label">Reason for traveling</label>
+                        <select class="form-select" id="travelType" name="travelType">
+                            <option value="" disabled selected>Please select...</option>
+                            <option value="1">Business</option>
+                            <option value="2">Group</option>
+                            <option value="3">Leisure</option>
+                        </select>
+                        <p class="error" id="travelTypeDesc">Please select a reason for traveling</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="travelType" class="form-label">Reason for traveling</label>
-                <select class="form-select" id="travelType" name="travelType">
-                    <option value="" disabled selected>Please select...</option>
-                    <option value="1">Business</option>
-                    <option value="2">Group</option>
-                    <option value="3">Leisure</option>
-                </select>
-                <p class="error" id="travelTypeDesc">Please select a reason for traveling</p>
-            </div>
+                    <!-- we can prompt this on the title so users dont have to choose  -->
 
-            <!-- we can prompt this on the title so users dont have to choose  -->
+                    <div class="mb-3">
+                        <label for="vacation" class="form-label">Vacation Packages</label>
+                        <select class="form-select" id="vacation" name="vacation">
+                            <option value="">Select a vacation package</option>
+                            <option value="Caribbean New Year" <%=packageName==='Caribbean New Year' ? 'selected' : ''
+                                %>
+                                >Caribbean New Year</option>
+                            <option value="Polynesian Paradise" <%=packageName==='Polynesian Paradise' ? 'selected' : ''
+                                %>
+                                >Polynesian Paradise</option>
+                            <option value="Asian Expedition" <%=packageName==='Asian Expedition' ? 'selected' : '' %>
+                                >Asian
+                                Expedition</option>
+                            <option value="European Vacation" <%=packageName==='European Vacation' ? 'selected' : '' %>
+                                >European
+                                Vacation</option>
+                        </select>
+                        <p class="error" id="vacationDesc">Please select a vacation package</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="vacation" class="form-label">Vacation Packages</label>
-                <select class="form-select" id="vacation" name="vacation">
-                    <option value="">Select a vacation package</option>
-                    <option value="Caribbean New Year" <%=packageName==='Caribbean New Year' ? 'selected' : '' %>
-                        >Caribbean New Year</option>
-                    <option value="Polynesian Paradise" <%=packageName==='Polynesian Paradise' ? 'selected' : '' %>
-                        >Polynesian Paradise</option>
-                    <option value="Asian Expedition" <%=packageName==='Asian Expedition' ? 'selected' : '' %>>Asian
-                        Expedition</option>
-                    <option value="European Vacation" <%=packageName==='European Vacation' ? 'selected' : '' %>>European
-                        Vacation</option>
-                </select>
-                <p class="error" id="vacationDesc">Please select a vacation package</p>
-            </div>
+                    <!-- In the div element, each description are all wrapped in p tags - all have class and each specific id's to run onFocus and validation functions in script.js -->
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" value="<%= result.CustFirstName %>" id="firstName"
+                            name="firstName" maxlength="25" required>
+                        <p class="error" id="firstDesc">Please enter your first name</p>
+                    </div>
 
-            <!-- In the div element, each description are all wrapped in p tags - all have class and each specific id's to run onFocus and validation functions in script.js -->
-            <div class="mb-3">
-                <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" value="<%= result.CustFirstName %>" id="firstName" name="firstName"
-                    maxlength="25" required>
-                <p class="error" id="firstDesc">Please enter your first name</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" value="<%= result.CustLastName %>" id="lastName"
+                            name="lastName" maxlength="25" required>
+                        <p class="error" id="lastDesc">Please enter your last name</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" value="<%= result.CustLastName %>" id="lastName" name="lastName" maxlength="25"
-                    required>
-                <p class="error" id="lastDesc">Please enter your last name</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" class="form-control" value="<%= result.CustEmail %>" id="email" name="email"
+                            maxlength="50" required>
+                        <p class="error" id="emailDesc">Please enter a valid email address</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" value="<%= result.CustEmail %>" id="email" name="email" maxlength="50"
-                    required>
-                <p class="error" id="emailDesc">Please enter a valid email address</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Home Phone Number</label>
+                        <input type="text" class="form-control" value='<%= result.CustHomePhone %>' id="phone"
+                            name="phone" maxlength="20" required>
+                        <p class="error" id="phoneDesc">Kindly ensure you enter your phone number with no spaces in this
+                            format: ##########</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="phone" class="form-label">Home Phone Number</label>
-                <input type="text" class="form-control" value='<%= result.CustHomePhone %>' id="phone" name="phone" maxlength="20"
-                    required>
-                <p class="error" id="phoneDesc">Kindly ensure you enter your phone number with no spaces in this format: ##########</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="busphone" class="form-label">Business Phone Number</label>
+                        <input type="text" class="form-control" value='<%= result.CustBusPhone %>' id="busphone"
+                            name="busphone" maxlength="20" required>
+                        <p class="error" id="busphoneDesc">Kindly ensure you enter your phone number with no spaces in
+                            this format: ##########
+                        </p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="busphone" class="form-label">Business Phone Number</label>
-                <input type="text" class="form-control" value='<%= result.CustBusPhone %>' id="busphone" name="busphone" maxlength="20"
-                    required>
-                <p class="error" id="busphoneDesc">Kindly ensure you enter your phone number with no spaces in this format: ##########
-                </p>
-            </div>
+                    <div class="mb-3">
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" value="<%= result.CustCity %>" id="city" name="city"
+                            maxlength="50" required>
+                        <p class="error" id="cityDesc">Please enter the city of your home</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" value="<%= result.CustCity %>" id="city" name="city"maxlength="50"
-                    required>
-                <p class="error" id="cityDesc">Please enter the city of your home</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="province" class="form-label">Province</label>
+                        <input type="text" class="form-control" value='<%= result.CustProv %>' id="province"
+                            name="province" maxlength="2" required>
+                        <p class="error" id="provinceDesc">Please enter the province of your home</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="province" class="form-label">Province</label>
-                <input type="text" class="form-control" value='<%= result.CustProv %>' id="province" name="province" maxlength="2"
-                    required>
-                <p class="error" id="provinceDesc">Please enter the province of your home</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="postal" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" value="<%= result.CustPostal %>" id="postal"
+                            name="postal" maxlength="7" required>
+                        <p class="error" id="postalDesc">Please enter your postal in this format: X#X-#X#</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="postal" class="form-label">Postal Code</label>
-                <input type="text" class="form-control" value="<%= result.CustPostal %>" id="postal" name="postal" maxlength="7"
-                    required>
-                <p class="error" id="postalDesc">Please enter your postal in this format: X#X-#X#</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" class="form-control" value="<%= result.CustCountry %>" id="country"
+                            name="country" maxlength="25" required>
+                        <p class="error" id="countryDesc">Please enter your country</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="country" class="form-label">Country</label>
-                <input type="text" class="form-control" value="<%= result.CustCountry %>" id="country" name="country" maxlength="25"
-                    required>
-                <p class="error" id="countryDesc">Please enter your country</p>
-            </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" rows="3" id="address" name="address" maxlength="75"
+                            required><%= result.CustAddress %></textarea>
+                        <p class="error" id="addressDesc">Please enter your address</p>
+                    </div>
 
-            <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <textarea class="form-control" rows="3" id="address" name="address" maxlength="75"
-                    required><%= result.CustAddress %></textarea>
-                <p class="error" id="addressDesc">Please enter your address</p>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-primary" id="resetButton">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="/vacation?phone=<%= result.CustHomePhone %>&userChecked=<%= true %>" type="reset"
+                        class="btn btn-primary" id="resetButton">Reset</a>
         </form>
     </div>
 
@@ -162,7 +174,7 @@
             <span class="text-body-secondary">Travel Experts Copyright</span>
         </div>
     </footer>
-    <script>
+    <!-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Get today's date
             const today = new Date().toISOString().split('T')[0];
@@ -181,7 +193,7 @@
             // Populate the Booking ID field
             document.getElementById('randomString').value = generateRandomString(10);
         });
-        // </script>
+        // </script> -->
 </body>
 
 </html>
