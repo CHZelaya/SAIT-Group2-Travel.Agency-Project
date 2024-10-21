@@ -1,9 +1,14 @@
-<!-- 
-Author: Stephen Garo
-Date: 2024-09-30
-Course Module: Web Application Development (CPRG-210-A)
-Assignment: Individual Project 1 - Travel Website
--->
+<!-- CREATE TABLE `reviews` (
+  `ReviewId` int NOT NULL AUTO_INCREMENT,
+  `CustomerId` int NOT NULL,
+  `Rating` tinyint NOT NULL,
+  `Comments` varchar(255) NOT NULL,
+  `SubmissionDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ReviewId`),
+  KEY `CustomerId` (`CustomerId`),
+  CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`CustomerId`) REFERENCES `customers` (`CustomerId`),
+  CONSTRAINT `reviews_chk_1` CHECK ((`Rating` between 1 and 5))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,56 +49,65 @@ Assignment: Individual Project 1 - Travel Website
 
     <!-- Review Form -->
     <section id="review-form">
-        <form action="/reviews/submit" method="POST">
+        <form action="/submit-review" method="POST" id="reviewForm">
+                        
+            <div class="mb-3">
+                <label for="phone" class="form-label">Home Phone Number</label>
+                <input type="tel" class="form-control" placeholder="123-456-7890" id="phone" name="CustHomePhone" maxlength="15" required>
+                <p class="error" id="phoneDesc">Please enter a valid phone number</p>
+            </div>
             
             <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" class="form-control" placeholder="name@example.com" id="email" maxlength="50"
-                    required>
-                <p class="error" id="emailDesc">Please enter a valid email address</p>
+                <label for="submissionDate">Submission Date</label>
+                <input type="text" class="form-control" id="submissionDate" name="SubmissionDate" value="<%= new Date().toISOString().split('T')[0] %>" readonly>
             </div>
+            
             <div class="mb-3">
-                <label for="currentDate">Today's Date</label>
-                <input type="text" class="form-control" id="currentDate" value="" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="randomString">Booking Code</label>
-                <input type="text" class="form-control" id="randomString" readonly>
-            </div>
-            <div class="mb-3">
-                <label for="randomString" class="rating">Rating:</label>
+                <label class="rating">Rating:</label>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio1" value="1">
                     <label class="form-check-label" for="inlineRadio1">Terrible</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio2" value="2">
                     <label class="form-check-label" for="inlineRadio2">Poor</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="3">
-                    <label class="form-check-label" for="inlineRadio2">Average</label>
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio3" value="3">
+                    <label class="form-check-label" for="inlineRadio3">Average</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="4">
-                    <label class="form-check-label" for="inlineRadio2">Good</label>
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio4" value="4">
+                    <label class="form-check-label" for="inlineRadio4">Good</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="5">
-                    <label class="form-check-label" for="inlineRadio2">Excellent</label>
+                    <input class="form-check-input" type="radio" name="Rating" id="inlineRadio5" value="5">
+                    <label class="form-check-label" for="inlineRadio5">Excellent</label>
                 </div>
                 <p class="error" id="rateDesc">Please select one option</p>
             </div>
+            
             <div class="mb-3">
-                <label for="address" class="form-label">Comments: </label>
-                <textarea class="form-control" rows="3" id="comments" maxlength="75" required></textarea>
+                <label for="comments" class="form-label">Comments:</label>
+                <textarea class="form-control" rows="3" id="comments" name="Comments" maxlength="255" required></textarea>
                 <p class="error" id="commentsDesc">Please enter your comment</p>
             </div>
-
+    
             <button type="submit" class="btn btn-primary">Submit Review</button>
             <button type="reset" class="btn btn-primary" id="resetButton">Reset</button>
         </form>
     </section>
+    
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const submissionDateInput = document.getElementById('submissionDate');
+            const today = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
+            submissionDateInput.value = today;
+        });
+    </script>
+    
+    
     </div>
     </body>
     </html>

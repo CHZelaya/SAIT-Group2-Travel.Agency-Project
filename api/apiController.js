@@ -31,11 +31,25 @@ db.connect((err) => {
 
 //* Home Page aka Index.html
 exports.getHomePage = (req, res) => {
-    // Send the index.html file located in the public folder
-    console.log("getHomePage method is being called. ")
-    res.render('../views/pages/index.ejs')
+    // Fetch reviews from the database
+    const sql = `
+        SELECT r.*, c.CustFirstName, c.CustLastName
+        FROM reviews r
+        JOIN customers c ON r.CustomerId = c.CustomerId
+    `;
 
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Server error');
+        }
+
+        console.log("getHomePage method is being called.");
+        // Render the home page with the fetched reviews
+        res.render('../views/pages/index.ejs', { reviews: results });
+    });
 };
+
 
 //*Countdown Page
 exports.getCountdownPage = (req, res) => {
@@ -56,6 +70,15 @@ exports.getRegisterPage = (req, res) => {
     res.render('../views/pages/register.ejs')
 
 }
+
+exports.getThankYouPage = (req, res) => {
+    const { phoneNumber, rating, comments, submissionDate } = req.query;
+
+    console.log('getThankYouPage is being called.');
+    res.render('../views/pages/thank-you.ejs', { phoneNumber, rating, comments, submissionDate });
+};
+
+
 
 
 //* Vacations Page
@@ -349,6 +372,39 @@ exports.submitBooking = async (req, res) => {
         console.log('thankyou is being called successfully')
     }
 }
+
+
+
+exports.submitReview = (req, res) => {
+    const { CustHomePhone, SubmissionDate, Rating, Comments } = req.body;
+
+    // Check if customer exists by home phone
+    const customerQuery = 'SELECT CustomerId, CustFirstName, CustLastName FROM customers WHERE CustHomePhone = ?';
+    db.query(customerQuery, [CustHomePhone], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Server error');
+        }
+
+        if (results.length === 0) {
+            return res.status(404).send('Customer not found');
+        }
+
+        const { CustomerId, CustFirstName, CustLastName } = results[0];
+
+        const reviewQuery = 'INSERT INTO reviews (CustomerId, Rating, Comments, SubmissionDate) VALUES (?, ?, ?, ?)';
+        db.query(reviewQuery, [CustomerId, Rating, Comments, SubmissionDate], (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Server error');
+            }
+
+            // Redirect to the thank-you page with query parameters
+            res.redirect(`/thank-you?phoneNumber=${encodeURIComponent(CustHomePhone)}&rating=${encodeURIComponent(Rating)}&comments=${encodeURIComponent(Comments)}&submissionDate=${encodeURIComponent(SubmissionDate)}`);
+        });
+    });
+};
+
 
 
 

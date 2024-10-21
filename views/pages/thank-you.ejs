@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Thank You for Your Review!</h1>
+        <p>We appreciate your feedback. Here are the details you submitted:</p>
+
+        <ul>
+            <li>Phone Number: <%= phoneNumber %></li>
+            <li>Rating: <%= rating %></li>
+            <li>Comments: <%= comments %></li>
+            <li>Submission Date: <%= submissionDate %></li>
+        </ul>
+        
+        <a href="/">Go back to Home</a>
+    </div>
+</body>
+</html>

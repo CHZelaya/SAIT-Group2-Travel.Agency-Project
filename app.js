@@ -42,6 +42,8 @@ app.get('/register', apiController.getRegisterPage);
 app.get('/vacation', apiController.getVacationPage);
 app.get('/orderform', apiController.getOrderForm);
 app.get('/reviewform', apiController.getReviewForm);
+app.get('/thank-you', apiController.getThankYouPage);
+
 
 //POST
 app.post('/check-registration', apiController.checkRegistration);
@@ -49,6 +51,7 @@ app.post('/check-registration', apiController.checkRegistration);
 // app.post('/register', apiController.postRegisterData)
 app.post('/complete-registration', apiController.registerCustomer);
 app.post('/booking', apiController.submitBooking)
+app.post('/submit-review', apiController.submitReview);
 
 //USE
 app.use(apiController.handle404);
