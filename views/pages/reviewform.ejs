@@ -45,14 +45,14 @@
         Thanks for submit!
       </div>
 
-    <h2 class="pb-2 border-bottom">Customer Reviews</h2>
+    <h2 class="pb-2 border-bottom">Share Your Experience With Us</h2>
 
     <!-- Review Form -->
     <section id="review-form">
         <form action="/submit-review" method="POST" id="reviewForm">
                         
             <div class="mb-3">
-                <label for="phone" class="form-label">Home Phone Number</label>
+                <label for="phone" class="form-label">Existing Registered Home Phone Number</label>
                 <input type="tel" class="form-control" placeholder="123-456-7890" id="phone" name="CustHomePhone" maxlength="15" required>
                 <p class="error" id="phoneDesc">Please enter a valid phone number</p>
             </div>
@@ -88,16 +88,16 @@
             </div>
             
             <div class="mb-3">
-                <label for="comments" class="form-label">Comments:</label>
+                <label for="comments" class="form-label">Please share your experience:</label>
                 <textarea class="form-control" rows="3" id="comments" name="Comments" maxlength="255" required></textarea>
                 <p class="error" id="commentsDesc">Please enter your comment</p>
             </div>
     
-            <button type="submit" class="btn btn-primary">Submit Review</button>
-            <button type="reset" class="btn btn-primary" id="resetButton">Reset</button>
+            <button type="submit" class="btn btn-warning btn-lg">Submit Review</button>
+            <button type="reset" class="btn btn-warning btn-lg" id="resetButton">Reset</button>
         </form>
     </section>
-    
+
     
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
