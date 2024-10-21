@@ -115,7 +115,7 @@ document.getElementById("orderForm").addEventListener("submit", function (event)
 
         // first it checks for regular expression and then validate if the form is not empty
         const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        if (data.email === "" || !emailPattern.test(data.email)) {
+        if (data.email && !emailPattern.test(data.email)) { // Only check if email is not empty
             displayError("emailDesc");
             isValid = false;
         }

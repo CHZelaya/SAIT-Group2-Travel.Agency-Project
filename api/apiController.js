@@ -244,6 +244,14 @@ exports.submitBooking = async (req, res) => {
 
     const errors = []; // Array to store errors (if any)
 
+    if (email) {
+        email = email.trim(); // Trim whitespace
+        // Validate email format
+        if (!validator.isEmail(email)) {
+            errors.push("Invalid Email format");
+        }
+    }
+
     //Validate first name length
     if (!validator.isLength(firstName, { min: 1, max: 50 })) {
         errors.push('First name must be between 1 - 50 characters');
@@ -253,9 +261,9 @@ exports.submitBooking = async (req, res) => {
         errors.push('Last name must be between 1 - 50 characters');
     }
     //Validate email is in email format
-    if (!validator.isEmail(email)) {
-        errors.push("Invalid Email format");
-    }
+    // if (!validator.isEmail(email)) {
+    //     errors.push("Invalid Email format");
+    // }
     //Validate home phone number
     if (!validator.isMobilePhone(phone, 'any')) {
         errors.push("Invalid Phone Number");
