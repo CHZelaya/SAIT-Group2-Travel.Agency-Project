@@ -105,10 +105,11 @@ body {
 .thanks-rating {
     display: none;
 }
+
 .btn-custom {
     background-color: white;
     color: black;
-    border: none; 
+    border: none;
 }
 
 .btn-custom:hover {
