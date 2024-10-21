@@ -240,85 +240,117 @@ exports.registerCustomer = (req, res) => {
 //Submit Bookings Data
 
 exports.submitBooking = async (req, res) => {
-    const { currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body
 
+    let { currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body
     const errors = []; // Array to store errors (if any)
 
+    // Validate first name length
+    if (!validator.isLength(firstName, { min: 1, max: 50 })) {
+        errors.push('First name must be between 1 - 50 characters');
+    }
+
+    // Validate last name length
+    if (!validator.isLength(lastName, { min: 1, max: 50 })) {
+        errors.push('Last name must be between 1 - 50 characters');
+    }
+
+    // Validate email format
     if (email) {
         email = email.trim(); // Trim whitespace
-        // Validate email format
         if (!validator.isEmail(email)) {
             errors.push("Invalid Email format");
         }
     }
 
-    //Validate first name length
-    if (!validator.isLength(firstName, { min: 1, max: 50 })) {
-        errors.push('First name must be between 1 - 50 characters');
-    }
-    //Validate last name length
-    if (!validator.isLength(lastName, { min: 1, max: 50 })) {
-        errors.push('Last name must be between 1 - 50 characters');
-    }
-    //Validate email is in email format
-    // if (!validator.isEmail(email)) {
-    //     errors.push("Invalid Email format");
-    // }
-    //Validate home phone number
+    // Validate home phone number
     if (!validator.isMobilePhone(phone, 'any')) {
-        errors.push("Invalid Phone Number");
+        errors.push("Invalid Home Phone Number");
+    }
 
-        //Validate business phone number
-        if (!validator.isMobilePhone(busphone, 'any')) {
-            errors.push("Invalid Phone Number");
-        }
-        //Validate city's length
-        if (!validator.isLength(city, { min: 1, max: 50 })) {
-            errors.push('City must be between 1 and 50 characters');
-        }
-        //Validate province's length
-        if (!validator.isLength(province, { min: 1, max: 50 })) {
-            errors.push("Province must be between 1 and 50 characters");
-        }
-        //validate postalcode in "any" format
-        if (!validator.isPostalCode(postal, 'any')) {
-            errors.push("Invalid postal code.")
-        }
-        //Validate country's length
-        if (!validator.isLength(country, { min: 1, max: 50 })) {
-            errors.push("Province must be between 1 and 50 characters");
-        }
-        //validate address length
-        if (!validator.isLength(address, { min: 1, max: 500 })) {
-            errors.push("Length must be between 1 and 500 characters. ")
-        }
-        if (!validator.isAlphanumeric) {
-            errors.push('Invalid format in Address Field')
-        }
+    // Validate business phone number
+    if (busphone && !validator.isMobilePhone(busphone, 'any')) {
+        errors.push("Invalid Business Phone Number");
+    }
 
-        if (errors.length > 0) {
-            return res.render('../views/pages/orderform.ejs', { errors: errors })
-        } else {
+    // Validate city's length
+    if (!validator.isLength(city, { min: 1, max: 50 })) {
+        errors.push('City must be between 1 and 50 characters');
+    }
 
+    // Validate province's length
+    if (!validator.isLength(province, { min: 2, max: 2 })) {
+        errors.push("Province must be in acronym form");
+    }
+
+    // Validate postal code
+    if (!validator.isPostalCode(postal, 'any')) {
+        errors.push("Invalid postal code.");
+    }
+
+    // Validate country's length
+    if (!validator.isLength(country, { min: 1, max: 50 })) {
+        errors.push("Country must be between 1 and 50 characters");
+    }
+
+    // Validate address length
+    if (!validator.isLength(address, { min: 1, max: 500 })) {
+        errors.push("Address must be between 1 and 500 characters.");
+    }
+    if (errors.length > 0) {
+        console.log(`submitBooking Method is being called passed errors.length check`)
+
+        return res.render('../views/pages/orderform.ejs', { errors: errors })
+    } else {
+
+        console.log('Validation passed, proceeding to create booking.');
+
+
+
+        try {
 
             const results = { currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address }
+            const sqlSelect = 'SELECT CustomerId FROM customers WHERE CustHomePhone = ?';
+            db.query(sqlSelect, [phone], (err, result) => {
+                if (err) {
+                    throw err;
+                }
 
+                if (result.length === 0) {
+                    return res.status(404).send("Customer not found");
+                }
 
-            try {
-                const newBooking = await Booking.create({
-                    currentDate, randomString, traveler, travelType, vacation, firstName, lastName, email, phone, busphone, city, province, postal, country, address
+                let customerID = result[0].CustomerId;
+
+                // Check if TripTypeId exists
+                const tripTypeId = travelType; // Assuming travelType holds the TripTypeId
+                const sqlCheckTripType = 'SELECT TripTypeId FROM triptypes WHERE TripTypeId = ?';
+                db.query(sqlCheckTripType, [tripTypeId], (err, tripTypeResult) => {
+                    if (err) {
+                        throw err;
+                    }
+
+                    if (tripTypeResult.length === 0) {
+                        return res.status(400).send("Invalid TripTypeId");
+                    }
+
+                    const sql = 'INSERT INTO bookings (BookingDate, BookingNo, Travelercount, CustomerID, TripTypeId) VALUES (?, ?, ?, ?, ?)';
+                    db.query(sql, [currentDate, randomString, traveler, customerID, tripTypeId], (err, result) => {
+                        if (err) {
+                            throw err;
+                        }
+                        res.render('../views/pages/thankyou.ejs', { results: results });
+                    });
                 });
-                res.render('../views/pages/thankyou.ejs', { results: results })
-
-
-            } catch (error) {
-                console.error("I broke!", error)
-            }
-
-            console.log('thankyou is being called successfully')
+            });
+        } catch (error) {
+            console.error("I broke!", error);
+            res.status(500).send("Internal Server Error");
         }
+        console.log('thankyou is being called successfully')
     }
 }
+
+
 
 
 

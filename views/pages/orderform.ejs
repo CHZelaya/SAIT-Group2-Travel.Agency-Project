@@ -59,9 +59,9 @@
                         <label for="travelType" class="form-label">Reason for traveling</label>
                         <select class="form-select" id="travelType" name="travelType">
                             <option value="" disabled selected>Please select...</option>
-                            <option value="1">Business</option>
-                            <option value="2">Group</option>
-                            <option value="3">Leisure</option>
+                            <option value="B">Business</option>
+                            <option value="G">Group</option>
+                            <option value="L">Leisure</option>
                         </select>
                         <p class="error" id="travelTypeDesc">Please select a reason for traveling</p>
                     </div>
@@ -163,8 +163,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a href="/vacation?phone=<%= result.CustHomePhone %>&userChecked=<%= true %>" type="reset"
-                        class="btn btn-primary" id="resetButton">Reset</a>
+                    <a href="/vacation" type="reset" class="btn btn-primary" id="resetButton">Reset</a>
         </form>
     </div>
 

@@ -70,15 +70,15 @@ document.getElementById("orderForm").addEventListener("submit", function (event)
 
     // If all validated then this will show confirmation message
     if (isValid) {
+        document.getElementById("orderForm").submit();
+        // if (confirm("Do you want to submit the form?")) {
 
-        if (confirm("Do you want to submit the form?")) {
 
-            alert("Form submitted successfully!");
 
-            // Reset
-            document.getElementById("registrationForm").reset();
+        // Reset
+        // document.getElementById("registrationForm").reset();
 
-        }
+        // }
 
     }
 
