@@ -215,18 +215,6 @@ exports.checkRegistration = (req, res) => {
 
 //*Register Page
 
-exports.postRegisterData = (req, res) => {
-    const { firstName, lastName, email, phoneNumber, busphone, city, province, postal, country, address, otherDetails } = req.body;
-    const registerUserQuery = 'INSERT INTO customers (CustFirstName, CustLastName, CustAddress, CustCity, CustProv, CustPostal, CustCountry, CustHomePhone, CustBusPhone, CustEmail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-
-    db.query(registerUserQuery, [firstName, lastName, email, phoneNumber, busphone, city, province, postal, country, address, otherDetails], (error, results) => {
-        if (error) throw error;
-
-        req.session.phoneNumber = phoneNumber;
-        res.redirect('/vacation');
-    });
-};
-
 exports.registerCustomer = (req, res) => {
     const { firstName, lastName, email, phone, busphone, city, province, postal, country, address } = req.body;
 

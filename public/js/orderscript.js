@@ -1,5 +1,3 @@
-
-console.log(`I'm working!`)
 //automatically prompt current date
 function getCurrentDate() {
     const date = new Date();

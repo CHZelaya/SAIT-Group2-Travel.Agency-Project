@@ -47,8 +47,6 @@ app.get('/thank-you', apiController.getThankYouPage);
 
 //POST
 app.post('/check-registration', apiController.checkRegistration);
-// app.post('/check-phone', apiController.postCheckPhone)
-// app.post('/register', apiController.postRegisterData)
 app.post('/complete-registration', apiController.registerCustomer);
 app.post('/booking', apiController.submitBooking)
 app.post('/submit-review', apiController.submitReview);
