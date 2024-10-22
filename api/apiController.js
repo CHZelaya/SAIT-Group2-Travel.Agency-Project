@@ -228,7 +228,7 @@ exports.registerCustomer = (req, res) => {
         if (err) {
             console.error("Error inserting customer: ", err);
 
-            return res.status(500).send("An error occurred while registering the customer.");
+            return res.status(500).send("You are already registered, If not please click back on your browser and try entering different information.mer.");
         }
 
         console.log("Customer registered successfully with ID:", result.insertId);
@@ -384,7 +384,7 @@ exports.submitReview = (req, res) => {
         db.query(reviewQuery, [CustomerId, Rating, Comments, SubmissionDate], (err) => {
             if (err) {
                 console.error(err);
-                return res.status(500).send('Server error');
+                return res.status(500).send('1 comment per customer. Please click back on your browser');
             }
 
             // Redirect to the thank-you page with query parameters
